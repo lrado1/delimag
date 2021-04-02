@@ -124,7 +124,7 @@ class Delimag():
             q = self.data.loc[self.data[self.var_horizontal].str.contains(dist_val[i]).fillna(False),self.var_value]
 
 
-            elif 'count' in calc:
+            if 'count' in calc:
                 def_dict[dist_val[i]] = q.shape[0]
                 
             elif 'mean' in calc:
