@@ -146,7 +146,28 @@ class Delimag():
         Create a cross-tabulation based on two variables and aggregates a third variables's values based on the cross-groupping.
         
         """
-
+        
+        dist_vert = self.distinct_vertical()
+        dist_hori = self.distinct_horizontal()
+        new_df = pd.DataFrame()
+        def_dict = defaultdict(int)
+        
+        for i in range(len(dist_hori)):
+            
+            for e in range(len(dist_vert)):
+                
+                query_data = self.data.loc[
+                    (self.data[self.var_horizontal].str.contains(dist_hori[i]).fillna(False)) &
+                    (self.data[self.var_vertical].str.contains(dist_vert[e]).fillna(False)) 
+                    ]
+            
+                def_dict[dist_vert[e]] = query_data.shape[0]
+            
+            new_df = new_df.append(def_dict, ignore_index=True)
+        
+        new_df.index = list(dist_hori)
+        
+        return new_df.fillna(0)
         
         
         
