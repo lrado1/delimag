@@ -161,7 +161,11 @@ class Delimag():
                     (self.data[self.var_vertical].str.contains(dist_vert[e]).fillna(False)) 
                     ]
             
-                def_dict[dist_vert[e]] = query_data.shape[0]
+                if calc == 'count':
+                    def_dict[dist_vert[e]] = query_data.shape[0]
+
+                elif calc == 'mean':
+                    def_dict[dist_vert[e]] = query_data[self.var_value].mean()
             
             new_df = new_df.append(def_dict, ignore_index=True)
         
