@@ -27,7 +27,15 @@ class Delimag():
     
     
     def __repr__(self):
-        pass       
+        
+        df_name =[x for x in globals() if globals()[x] is self.data][0]
+        
+        return (f'DataFrame name: {df_name} \n'
+                f'Vertical variable: {self.var_vertical} \n'
+                f'Horizontal variable: {self.var_horizontal} \n'
+                f'Value variable: {self.var_value} \n'
+                f'Aggregation type: {self._aggregation_type} \n'
+                f'Aggregation method: {self._aggregation_method}')     
     
     
     
