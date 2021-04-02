@@ -63,7 +63,15 @@ class Delimag():
         """
         Return a list of distinct values from the col_horizontal variable, after splitting the delimited records.
         """
-
+        
+        if drop_na:
+            distinct_values = list({value for values in self.data[self.var_horizontal].dropna() 
+                                    for value in str(values).split(delim)})
+        else:
+            distinct_values = list({value for values in self.data[self.var_horizontal] 
+                                    for value in str(values).split(delim)})
+        
+        return distinct_values
        
         
         
