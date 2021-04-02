@@ -169,6 +169,9 @@ class Delimag():
                 
                 elif calc == 'sum':
                     def_dict[dist_vert[e]] = query_data[self.var_value].sum()
+                    
+                elif calc == 'min':
+                    def_dict[dist_vert[e]] = query_data[self.var_value].min()
             
             new_df = new_df.append(def_dict, ignore_index=True)
         
