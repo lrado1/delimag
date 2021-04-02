@@ -21,8 +21,10 @@ class Delimag():
     
     
     
+    
     def __version__():
         pass
+    
     
     
     
@@ -39,18 +41,31 @@ class Delimag():
     
     
     
+    
     def distinct_vertical(self, delim=';', drop_na=True):
         """
         Return a list of distinct values from the col_vertical variable, after splitting the delimited records.
         """
-         
+        
+        if drop_na:
+            distinct_values = list({value for values in self.data[self.var_vertical].dropna() 
+                                    for value in str(values).split(delim)})
+        else:
+            distinct_values = list({value for values in self.data[self.var_vertical] 
+                                    for value in str(values).split(delim)})
+        
+        return distinct_values
+        
+        
         
         
     def distinct_horizontal(self, delim=';', drop_na=True):
         """
         Return a list of distinct values from the col_horizontal variable, after splitting the delimited records.
         """
+
        
+        
         
     
     def aggregate_vertical(self, calc='count', delim=';', drop_na=True):
@@ -67,11 +82,14 @@ class Delimag():
         """
         
                 
-            
+        
+        
     def aggregate_cross(self, calc='count', delim_vertical=';', delim_horizontal=';'):
         """
         Create a cross-tabulation based on two variables and aggregates a third variables's values based on the cross-groupping.
         """
+        
+        
         
         
     def condition(self, vertical, horizontal, value):
@@ -81,9 +99,12 @@ class Delimag():
 
         
         
+        
     def result(self, sort_vertical, sort_horizontal, proportionize=False):
         """
         Return the result set of the aggregation in a Pandas DataFrame object in an organized format (sorted, proportionized).
         """
+        
+        
         
         
