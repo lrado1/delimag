@@ -172,6 +172,9 @@ class Delimag():
                     
                 elif calc == 'min':
                     def_dict[dist_vert[e]] = query_data[self.var_value].min()
+                    
+                elif calc == 'max':
+                    def_dict[dist_vert[e]] = query_data[self.var_value].max()
             
             new_df = new_df.append(def_dict, ignore_index=True)
         
