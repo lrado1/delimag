@@ -45,6 +45,7 @@ class Delimag():
     def distinct_vertical(self, delim=';', drop_na=True):
         """
         Return a list of distinct values from the col_vertical variable, after splitting the delimited records.
+        
         """
         
         if drop_na:
@@ -62,6 +63,7 @@ class Delimag():
     def distinct_horizontal(self, delim=';', drop_na=True):
         """
         Return a list of distinct values from the col_horizontal variable, after splitting the delimited records.
+        
         """
         
         if drop_na:
@@ -79,6 +81,7 @@ class Delimag():
     def aggregate_vertical(self, calc='count', delim=';', drop_na=True):
         """
         Aggregate along the col_vertical variable.
+        
         """
         
         dist_val = self.distinct_vertical(delim=delim, drop_na=drop_na)
@@ -110,7 +113,30 @@ class Delimag():
     def aggregate_horizontal(self, calc='count', delim=';', drop_na=True):
         """
         Aggregate along the col_horizontal variable.
+        
         """
+
+        dist_val = self.distinct_horizontal(delim=delim, drop_na=drop_na)
+        def_dict = defaultdict(int)
+
+
+        for i in range(len(dist_val)):
+            q = self.data.loc[self.data[self.var_horizontal].str.contains(dist_val[i]).fillna(False),self.var_value]
+
+            # Appling the calculation on each sub-subset DataFrame
+            if 'mean' in calc:
+                pass
+                #def_dict[ddv[i]] = q.mean()
+            elif 'count' in calc:
+                def_dict[dist_val[i]] = q.shape[0]
+            elif 'sum' in calc:
+                pass
+                #def_dict[ddv[i]] = q.sum()   
+
+        new_df = pd.DataFrame(pd.Series(def_dict))       
+        new_df.columns = [calc]
+        
+        return new_df
         
                 
         
@@ -118,7 +144,9 @@ class Delimag():
     def aggregate_cross(self, calc='count', delim_vertical=';', delim_horizontal=';'):
         """
         Create a cross-tabulation based on two variables and aggregates a third variables's values based on the cross-groupping.
+        
         """
+
         
         
         
@@ -126,6 +154,7 @@ class Delimag():
     def condition(self, vertical, horizontal, value):
         """
         Filter the result set of the aggregation. 
+        
         """
 
         
@@ -134,6 +163,7 @@ class Delimag():
     def result(self, sort_vertical, sort_horizontal, proportionize=False):
         """
         Return the result set of the aggregation in a Pandas DataFrame object in an organized format (sorted, proportionized).
+        
         """
         
         
