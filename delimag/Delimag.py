@@ -80,6 +80,29 @@ class Delimag():
         """
         Aggregate along the col_vertical variable.
         """
+        
+        dist_val = self.distinct_vertical(delim=delim, drop_na=drop_na)
+        def_dict = defaultdict(int)
+
+
+        for i in range(len(dist_val)):
+            
+            q = self.data.loc[self.data[self.var_vertical].str.contains(dist_val[i]).fillna(False),self.var_value]
+
+            # Appling the calculation on each sub-subset DataFrame
+            if 'mean' in calc:
+                pass
+                def_dict[dist_val[i]] = q.mean()
+            elif 'count' in calc:
+                def_dict[dist_val[i]] = q.shape[0]
+            elif 'sum' in calc:
+                pass
+                def_dict[dist_val[i]] = q.sum()   
+
+        new_df = pd.DataFrame(pd.Series(def_dict))       
+        new_df.columns = [calc]
+        
+        return new_df
     
     
     
