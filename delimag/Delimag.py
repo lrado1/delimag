@@ -92,15 +92,20 @@ class Delimag():
             
             q = self.data.loc[self.data[self.var_vertical].str.contains(dist_val[i]).fillna(False),self.var_value]
 
-            # Appling the calculation on each sub-subset DataFrame
-            if 'mean' in calc:
-                pass
-                def_dict[dist_val[i]] = q.mean()
-            elif 'count' in calc:
+            if 'count' in calc:
                 def_dict[dist_val[i]] = q.shape[0]
+                
+            elif 'mean' in calc:
+                def_dict[dist_val[i]] = q[self.var_value].mean()
+                
             elif 'sum' in calc:
-                pass
-                def_dict[dist_val[i]] = q.sum()   
+                def_dict[dist_val[i]] = q[self.var_value].sum()
+                
+            elif 'min' in calc:
+                def_dict[dist_val[i]] = q[self.var_value].min()
+                
+            elif 'max' in calc:
+                def_dict[dist_val[i]] = q[self.var_value].max() 
 
         new_df = pd.DataFrame(pd.Series(def_dict))       
         new_df.columns = [calc]
