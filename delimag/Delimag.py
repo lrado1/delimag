@@ -166,6 +166,9 @@ class Delimag():
 
                 elif calc == 'mean':
                     def_dict[dist_vert[e]] = query_data[self.var_value].mean()
+                
+                elif calc == 'sum':
+                    def_dict[dist_vert[e]] = query_data[self.var_value].sum()
             
             new_df = new_df.append(def_dict, ignore_index=True)
         
