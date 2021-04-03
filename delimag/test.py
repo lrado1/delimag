@@ -16,6 +16,9 @@ class TestDelimagClass(unittest.TestCase):
     def setUp(self):
         self.delimag = Delimag(test_df, 'Object', 'Color', 'Value')
     
+    
+    
+    
     def test_initialization(self):
         self.assertEqual(self.delimag.var_vertical, 'Object', "var_vertical initialized incorrectly")
         self.assertEqual(self.delimag.var_horizontal, 'Color', "var_horizontal initialized incorrectly")
@@ -24,6 +27,9 @@ class TestDelimagClass(unittest.TestCase):
         self.assertEqual(self.delimag.data.loc[0,'Object'], "Cube;Pyramid;Cone", "data initialized incorrectly")
         self.assertEqual(self.delimag.data.loc[10,'Color'], "Black;Black;Blue", "data initialized incorrectly")
         self.assertEqual(self.delimag.data.loc[19,'Value'], 11.0, "data initialized incorrectly")   
+    
+    
+    
     
     def distinct_vertical(self):
         self.assertSequenceEqual(self.delimag.distinct_vertical(), ['Cube', 'Pyramid', 'Cone', 'Sphere'], 
@@ -39,6 +45,8 @@ class TestDelimagClass(unittest.TestCase):
                          ".distinct_vertical() returned incorrect list of values")
     
     
+    
+    
     def distinct_horizontal(self):
         self.assertSequenceEqual(self.delimag.distinct_horizontal(), ['Black', 'Blue', 'Red', 'Green'], 
                          ".distinct_horizontal() returned incorrect list of values")
@@ -51,6 +59,8 @@ class TestDelimagClass(unittest.TestCase):
         
         self.assertEqual(self.delimag.distinct_horizontal(delim=' ', drop_na=False)[5], 'Green;Blue;Blue', 
                          ".distinct_horizontal() returned incorrect value")
+    
+    
     
     
     def aggregate_vertical(self):
@@ -120,12 +130,41 @@ class TestDelimagClass(unittest.TestCase):
         
         self.assertEqual(self.delimag.aggregate_horizontal(calc='count', delim=' ').loc['Black'][0], 9, 
                           ".aggregate_horizontal() returned incorrect calc value when delim=' '")
-    
-    
-    
+
+        
+        
     
     def aggregate_cross(self):
-        pass
+        self.assertEqual(self.delimag.aggregate_cross().loc['Black', 'Cone'], 3,
+                          ".aggregate_cross() returned incorrect count value")
+        
+        self.assertEqual(self.delimag.aggregate_cross(calc='count').loc['Black', 'Cone'], 3,
+                          ".aggregate_cross() returned incorrect count value")
+        
+        self.delimag.aggregate_cross(calc='count')
+        self.assertEqual(self.delimag.result.loc['Black', 'Cone'], 3,
+                          ".aggregate_cross() updated result class attribute incorrectly")
+        
+        self.assertAlmostEqual(self.delimag.aggregate_cross(calc='mean').loc['Black', 'Cone'], 63.333333, 
+                          ".aggregate_cross() returned incorrect mean value")
+        
+        self.assertEqual(self.delimag.aggregate_cross(calc='sum').loc['Blue', 'Pyramid'], 0, 
+                          ".aggregate_cross() returned incorrect sum value")
+        
+        self.assertEqual(self.delimag.aggregate_cross(calc='min').loc['Red', 'Pyramid'], 43, 
+                          ".aggregate_cross() returned incorrect min value")
+        
+        self.assertEqual(self.delimag.aggregate_cross(calc='min').loc['Green', 'Cone'], 24.0, 
+                          ".aggregate_cross() returned incorrect min value")
+    
+        self.assertEqual(self.delimag.aggregate_cross(calc='max').loc['Black', 'Cone'], 96, 
+                          ".aggregate_cross() returned incorrect max value")
+        
+        self.assertEqual(self.delimag.aggregate_cross(calc='max').loc['Black', 'Sphere'], 49, 
+                          ".aggregate_cross() returned incorrect max value")
+        
+        self.assertEqual(self.delimag.aggregate_cross(calc='max', delim_vertical=' ', delim_horizontal=' ').loc['Black;Red', 'Cone;Pyramid'], 43, 
+                          ".aggregate_cross() returned incorrect calc value when delim=' '")
     
     def return_result(self):
         pass
