@@ -277,8 +277,7 @@ class Delimag():
         
     def result(self, sort_vertical, sort_horizontal, proportionize=False):
         """
-        Return the result set of the aggregation in a Pandas DataFrame object in an organized format (sorted, proportionized).
-        
+        Return the result set of the aggregation in a Pandas DataFrame object in an organized format (sorted, proportionized).                
         """
         
         
