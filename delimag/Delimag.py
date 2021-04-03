@@ -14,12 +14,14 @@ class Delimag():
     def __init__(self, data, var_vertical, var_horizontal="", var_value=""):
         
         self.data = data
+        self.result = self.data
         self.var_vertical = var_vertical
         self.var_horizontal = var_horizontal
         self.var_value = var_value
-        
+                
         self._aggregation_type = ''
         self._aggregation_method = ''
+        
     
     
     
@@ -204,6 +206,8 @@ class Delimag():
         Return the result set of the aggregation in a Pandas DataFrame object in an organized format (sorted, proportionized).
         
         """
+        
+        
         
         
         
