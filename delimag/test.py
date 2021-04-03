@@ -13,6 +13,7 @@ from delimag import Delimag
 test_df = pd.read_csv('test_data.csv')
 
 class TestDelimagClass(unittest.TestCase):
+    
     def setUp(self):
         self.delimag = Delimag(test_df, 'Object', 'Color', 'Value')
     
@@ -166,5 +167,23 @@ class TestDelimagClass(unittest.TestCase):
         self.assertEqual(self.delimag.aggregate_cross(calc='max', delim_vertical=' ', delim_horizontal=' ').loc['Black;Red', 'Cone;Pyramid'], 43, 
                           ".aggregate_cross() returned incorrect calc value when delim=' '")
     
+    
+    
+    
     def return_result(self):
-        pass
+        self.delimag.aggregate_cross(calc='count')
+        self.assertEqual(self.return_result().loc['Black', 'Cone'], 3,
+                          ".return_result() method returned incorrec value")
+        
+        self.assertEqual(self.return_result(sort_vertical='Cone').iloc[1,1], 1,
+                          "result class attribute returned incorrec value")
+        
+        self.assertEqual(self.return_result(sort_vertical='Pyramid').iloc[3,2], 3,
+                          "result class attribute returned incorrec value")
+        
+        self.delimag.aggregate_cross(calc='sum')
+        self.assertEqual(self.return_result(sort_vertical='Pyramid', sort_horizontal='Green').iloc[2,2], 114.0,
+                          "result class attribute returned incorrec value")
+        
+        
+        
