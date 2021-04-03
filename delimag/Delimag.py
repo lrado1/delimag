@@ -48,7 +48,7 @@ class Delimag():
         self._aggregation_type = ''
         self._aggregation_method = ''
  
-    
+
     
     
     def __repr__(self):
@@ -69,6 +69,12 @@ class Delimag():
         """
         Return a list of distinct values from the col_vertical variable, after splitting the delimited records.
         
+        Parameters:
+        -----------
+        
+        delim (String): Specifies the separator to use when splitting the string.
+        dropna (Boolean): Remove missing values from the result set.
+        
         """
         
         if drop_na:
@@ -87,6 +93,11 @@ class Delimag():
         """
         Return a list of distinct values from the col_horizontal variable, after splitting the delimited records.
         
+        Parameters:
+        -----------
+        
+        delim (String): Specifies the separator to use when splitting the string.
+        dropna (Boolean): Remove missing values from the result set.
         """
         
         if drop_na:
