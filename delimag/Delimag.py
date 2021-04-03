@@ -210,5 +210,5 @@ class Delimag():
         
         
         
-        
+        result self.result
         
