@@ -54,6 +54,7 @@ class TestDelimagClass(unittest.TestCase):
     
     
     def aggregate_vertical(self):
+        
         self.assertEqual(self.delimag.aggregate_vertical().loc['Cube'][0], 8,
                           ".aggregate_vertical() returned incorrect count value")
         
@@ -72,22 +73,54 @@ class TestDelimagClass(unittest.TestCase):
         self.assertEqual(self.delimag.aggregate_vertical(calc='min').loc['Cube'][0], 12, 
                           ".aggregate_vertical() returned incorrect min value")
         
-       self.assertEqual(self.delimag.aggregate_vertical(calc='min').loc['Sphere'][0], 17, 
+        self.assertEqual(self.delimag.aggregate_vertical(calc='min').loc['Sphere'][0], 17, 
                           ".aggregate_vertical() returned incorrect min value")
     
-       self.assertEqual(self.delimag.aggregate_vertical(calc='max').loc['Cone'][0], 96, 
+        self.assertEqual(self.delimag.aggregate_vertical(calc='max').loc['Cone'][0], 96, 
                           ".aggregate_vertical() returned incorrect max value")
         
-       self.assertEqual(self.delimag.aggregate_vertical(calc='max').loc['Pyramid'][0], 90, 
+        self.assertEqual(self.delimag.aggregate_vertical(calc='max').loc['Pyramid'][0], 90, 
                           ".aggregate_vertical() returned incorrect max value")
-       
         
+        self.assertEqual(self.delimag.aggregate_vertical(calc='count', delim=' ').loc['Sphere'][0], 5, 
+                          ".aggregate_vertical() returned incorrect calc value when delim=' '")
         
-        
-        
+
+
         
     def aggregate_horizontal(slef):
-        pass
+        self.assertEqual(self.delimag.aggregate_horizontal().loc['Cube'][0], 8,
+                          ".aggregate_horizontal() returned incorrect count value")
+        
+        self.assertEqual(self.delimag.aggregate_horizontal(calc='count').loc['Cube'][0], 8,
+                          ".aggregate_horizontal() returned incorrect count value")
+        
+        self.assertEqual(self.delimag.result.loc['Cube'][0], 8,
+                          ".aggregate_horizontal() updated result class attribute incorrectly")
+        
+        self.assertAlmostEqual(self.delimag.aggregate_horizontal(calc='mean').loc['Cube'][0], 51.428571, 
+                          ".aggregate_horizontal() returned incorrect mean value")
+        
+        self.assertEqual(self.delimag.aggregate_horizontal(calc='sum').loc['Cube'][0], 360, 
+                          ".aggregate_horizontal() returned incorrect sum value")
+        
+        self.assertEqual(self.delimag.aggregate_horizontal(calc='min').loc['Cube'][0], 12, 
+                          ".aggregate_horizontal() returned incorrect min value")
+        
+        self.assertEqual(self.delimag.aggregate_horizontal(calc='min').loc['Sphere'][0], 17, 
+                          ".aggregate_horizontal() returned incorrect min value")
+    
+        self.assertEqual(self.delimag.aggregate_horizontal(calc='max').loc['Cone'][0], 96, 
+                          ".aggregate_horizontal() returned incorrect max value")
+        
+        self.assertEqual(self.delimag.aggregate_horizontal(calc='max').loc['Pyramid'][0], 90, 
+                          ".aggregate_horizontal() returned incorrect max value")
+        
+        self.assertEqual(self.delimag.aggregate_horizontal(calc='count', delim=' ').loc['Sphere'][0], 5, 
+                          ".aggregate_horizontal() returned incorrect calc value when delim=' '")
+    
+    
+    
     
     def aggregate_cross(self):
         pass
