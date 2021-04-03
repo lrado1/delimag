@@ -112,7 +112,7 @@ class Delimag():
         
         
     
-    def aggregate_vertical(self, calc='count', delim=';', dropna=True):
+    def aggregate_vertical(self, calc='count', delim=';'):
         """
         Aggregate the var_val variable with groupping by the var_vertical variable.
         
@@ -132,7 +132,7 @@ class Delimag():
         
         """
         
-        dist_val = self.distinct_vertical(delim=delim, dropna=dropna)
+        dist_val = self.distinct_vertical(delim=delim)
         def_dict = defaultdict(int)
 
 
@@ -163,7 +163,7 @@ class Delimag():
     
     
     
-    def aggregate_horizontal(self, calc='count', delim=';', dropna=True):
+    def aggregate_horizontal(self, calc='count', delim=';'):
         """
         Aggregate the var_val variable with groupping by the var_horizontal variable.
         
@@ -183,7 +183,7 @@ class Delimag():
         
         """
 
-        dist_val = self.distinct_horizontal(delim=delim, dropna=dropna)
+        dist_val = self.distinct_horizontal(delim=delim)
         def_dict = defaultdict(int)
 
 
