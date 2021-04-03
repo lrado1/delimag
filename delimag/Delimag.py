@@ -17,16 +17,16 @@ class Delimag():
 
     Methods:
     --------
-        distinct_vertical(delim=';', drop_na=True): 
+        distinct_vertical(delim=';', dropna=True): 
             Return a list of distinct values from the col_vertical variable, after splitting the delimited records.
         
-        distinct_horizontaldelim=';', drop_na=True):
+        distinct_horizontaldelim=';', dropna=True):
             Return a list of distinct values from the col_horizontal variable, after splitting the delimited records.
             
-        aggregate_vertical(calc='count', delim=';', drop_na=True):
+        aggregate_vertical(calc='count', delim=';', dropna=True):
             Aggregate the var_val variable with groupping by the var_vertical variable.
             
-        aggregate_horizontal(calc='count', delim=';', drop_na=True):
+        aggregate_horizontal(calc='count', delim=';', dropna=True):
             Aggregate the var_val variable with groupping by the var_horizontal variable.            
             
         aggregate_cross(calc='count', delim_vertical=';', delim_horizontal=';'):
@@ -65,7 +65,7 @@ class Delimag():
     
     
     
-    def distinct_vertical(self, delim=';', drop_na=True):
+    def distinct_vertical(self, delim=';', dropna=True):
         """
         Return a list of distinct values from the col_vertical variable, after splitting the delimited records.
         
@@ -77,7 +77,7 @@ class Delimag():
         
         """
         
-        if drop_na:
+        if dropna:
             distinct_values = list({value for values in self.data[self.var_vertical].dropna() 
                                     for value in str(values).split(delim)})
         else:
@@ -89,7 +89,7 @@ class Delimag():
         
         
         
-    def distinct_horizontal(self, delim=';', drop_na=True):
+    def distinct_horizontal(self, delim=';', dropna=True):
         """
         Return a list of distinct values from the col_horizontal variable, after splitting the delimited records.
         
@@ -100,7 +100,7 @@ class Delimag():
         dropna (Boolean): Remove missing values from the result set.
         """
         
-        if drop_na:
+        if dropna:
             distinct_values = list({value for values in self.data[self.var_horizontal].dropna() 
                                     for value in str(values).split(delim)})
         else:
@@ -112,7 +112,7 @@ class Delimag():
         
         
     
-    def aggregate_vertical(self, calc='count', delim=';', drop_na=True):
+    def aggregate_vertical(self, calc='count', delim=';', dropna=True):
         """
         Aggregate the var_val variable with groupping by the var_vertical variable.
         
@@ -132,7 +132,7 @@ class Delimag():
         
         """
         
-        dist_val = self.distinct_vertical(delim=delim, drop_na=drop_na)
+        dist_val = self.distinct_vertical(delim=delim, dropna=dropna)
         def_dict = defaultdict(int)
 
 
@@ -163,7 +163,7 @@ class Delimag():
     
     
     
-    def aggregate_horizontal(self, calc='count', delim=';', drop_na=True):
+    def aggregate_horizontal(self, calc='count', delim=';', dropna=True):
         """
         Aggregate the var_val variable with groupping by the var_horizontal variable.
         
@@ -183,7 +183,7 @@ class Delimag():
         
         """
 
-        dist_val = self.distinct_horizontal(delim=delim, drop_na=drop_na)
+        dist_val = self.distinct_horizontal(delim=delim, dropna=dropna)
         def_dict = defaultdict(int)
 
 
