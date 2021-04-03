@@ -209,9 +209,22 @@ class Delimag():
         
     def result(self, sort_vertical, sort_horizontal, proportionize=False):
         """
-        Return the result set of the aggregation in a Pandas DataFrame object in an organized format (sorted, proportionized).
+        Return the result set of the last aggregation applied on the input DataFrame object in an organized format (sorted, proportionized).
+        
+        
+        Attributes:
+        sort_vertical (String): Name or list of names of horizontal (axis 1) variables to sort the result table vertically.
+        
+        sort_horizontal (String): Name or list of names of vertical (axis 0) variables to sort the result table horizontall.
+        
+        proportionize (Boolean): Recalculate the values of the result DataFrame as proportions.
+            - if proportionoze = False: no recalculation will be done.
+            - if proportionize = 'column': Values will be shown as the proportion of the column total.
+            - if proportionize = 'row': Values will be shown as the proportion of the row total (only possible after .aggregate_cross() method)
+            - if proportionize = 'total': Values will be shown as the proportion of the grand total.
         
         """
+        
         
         
         
