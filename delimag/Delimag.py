@@ -207,7 +207,7 @@ class Delimag():
         
         
         
-    def result(self, sort_vertical, sort_horizontal, proportionize=False):
+        def return_result(self, sort_vertical='', sort_horizontal='', proportionize=False):
         """
         Return the result set of the last aggregation applied on the input DataFrame object in an organized format (sorted, proportionized).
         
@@ -225,9 +225,12 @@ class Delimag():
         
         """
         
+        if sort_vertical != '':
+            self.result.sort_values(by=sort_vertical, axis=0, inplace=True)
         
-        
-        
+        if sort_horizontal != '':
+            self.result.sort_values(by=sort_horizontal, axis=1, inplace=True)
+                
         
         return self.result
         
