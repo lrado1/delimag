@@ -225,11 +225,13 @@ class Delimag():
         
         """
         
+        result = self.result.copy()
+        
         if sort_vertical != '':
-            self.result.sort_values(by=sort_vertical, axis=0, inplace=True)
+            result.sort_values(by=sort_vertical, axis=0, inplace=True)
         
         if sort_horizontal != '':
-            self.result.sort_values(by=sort_horizontal, axis=1, inplace=True)
+            result.sort_values(by=sort_horizontal, axis=1, inplace=True)
                 
         
         return self.result
