@@ -236,8 +236,8 @@ class Delimag():
         
         """
         
-        dist_vert = self.distinct_vertical()
-        dist_hori = self.distinct_horizontal()
+        dist_vert = self.distinct_vertical(delim=delim_vertical)
+        dist_hori = self.distinct_horizontal(delim=delim_horizontal)
         new_df = pd.DataFrame()
         def_dict = defaultdict(int)
         
