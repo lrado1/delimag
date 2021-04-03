@@ -218,6 +218,22 @@ class Delimag():
         """
         Create a cross-tabulation based on two variables and aggregates a third variables's values based on the cross-groupping.
         
+        Parameters:
+        -----------
+        
+        calc (String): Method of aggregation. Possible values:
+            - sum
+            - mean
+            - min
+            - max
+            - count
+        
+        delim_vertical (String): Specifies the separator to use when splitting the string in the var_vertical variable.
+        
+        delim_horizontal (String): Specifies the separator to use when splitting the string in the var_horizontal variable.
+        
+        dropna (Boolean): Remove missing values from the result set.
+        
         """
         
         dist_vert = self.distinct_vertical()
