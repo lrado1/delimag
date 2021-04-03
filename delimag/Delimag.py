@@ -47,13 +47,7 @@ class Delimag():
         
         self._aggregation_type = ''
         self._aggregation_method = ''
-    
-    
-    
-    
-    def __version__():
-        pass
-    
+ 
     
     
     
