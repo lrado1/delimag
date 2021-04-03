@@ -232,7 +232,38 @@ class Delimag():
         
         if sort_horizontal != '':
             result.sort_values(by=sort_horizontal, axis=1, inplace=True)
+
+        
+        
+        if proportionize in ('column', 'row', 'total', ''):
+        
+            if proportionize == 'column':
+
+                for col in result.columns:
+                    total = result[col].sum(axis=0)
+
+                    for row in result.index:
+                        result.loc[row, col] = result.loc[row, col] / total
+
+            elif proportionize == 'row':
+
+                for row in result.index:
+                    total = result.loc[index,].sum(axis=1)
+
+                    for row in result.index:
+                        result.loc[row, col] = result.loc[row, col] / total
+
+            elif proportionize == 'total':
+
+                total = sum([result[x].sum() for x in result.columns])
+                for col in result.columns:
+                    for row in result.index:
+                        result.loc[row, col] = result.loc[row, col] / total
+        
+        else:
+            raise ValueError("proportionize parameter can only accept the following values:"\
+                             "'column', 'row', 'total' or can be left empty.")
                 
         
-        return self.result
+        return result
         
