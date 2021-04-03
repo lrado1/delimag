@@ -2,9 +2,10 @@ class Delimag():
     """
     Delimag is a tool to analyze Pandas DataFrame objects with multiselect records.
     
-    Makes it possible to create spreadsheet-style pivot tables after splitting delimited, multiselect records.
+    Makes it possible to create a cross-tabulation after splitting delimited, multiselected records.
         
-    Parameters:
+    Attributes:
+    -----------
         data (Pandas DataFrame): A Pandas DataFrame object that we are goint to analyse.
         
         var_vertical (str): The column name of a categorical variable of the data. Will be used as key to group by along the vertical axis of the resulting pivot-talbe.
@@ -15,7 +16,25 @@ class Delimag():
         
 
     Methods:
-
+    --------
+        distinct_vertical(delim=';', drop_na=True): 
+            Return a list of distinct values from the col_vertical variable, after splitting the delimited records.
+        
+        distinct_horizontaldelim=';', drop_na=True):
+            Return a list of distinct values from the col_horizontal variable, after splitting the delimited records.
+            
+        aggregate_vertical(calc='count', delim=';', drop_na=True):
+            Aggregate the var_val variable with groupping by the var_vertical variable.
+            
+        aggregate_horizontal(calc='count', delim=';', drop_na=True):
+            Aggregate the var_val variable with groupping by the var_horizontal variable.            
+            
+        aggregate_cross(calc='count', delim_vertical=';', delim_horizontal=';'):
+            Create a cross tabulation by aggregating the values of the var_val variable by groupping along the var_horizontal and var_vertical variables.
+            
+        return_result(sort_vertical='', sort_horizontal='', proportionize=''):
+            Return an organized (sorted, proportionized) table of the result of the last aggregation applied on the data.
+            
             
     """
 
@@ -90,7 +109,7 @@ class Delimag():
     
     def aggregate_vertical(self, calc='count', delim=';', drop_na=True):
         """
-        Aggregate along the col_vertical variable.
+        Aggregate the var_val variable with groupping by the var_vertical variable.
         
         """
         
@@ -127,7 +146,7 @@ class Delimag():
     
     def aggregate_horizontal(self, calc='count', delim=';', drop_na=True):
         """
-        Aggregate along the col_horizontal variable.
+        Aggregate the var_val variable with groupping by the var_horizontal variable.
         
         """
 
