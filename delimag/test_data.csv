@@ -1,5 +1,5 @@
 Object,Color,Value
-Cube;Pyramid;Cone,Black;NAN,51
+Cube;Pyramid;Cone,Black,51
 Cone;Cone;Cone,Red,
 Pyramid;Cone,Green,90
 Pyramid;Sphere;Cube,,17
