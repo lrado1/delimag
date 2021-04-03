@@ -254,16 +254,16 @@ class Delimag():
                     def_dict[dist_vert[e]] = query_data.shape[0]
 
                 elif calc == 'mean':
-                    def_dict[dist_vert[e]] = query_data[self.var_value].mean()
+                    def_dict[dist_vert[e]] = query_data.mean()
                 
                 elif calc == 'sum':
-                    def_dict[dist_vert[e]] = query_data[self.var_value].sum()
+                    def_dict[dist_vert[e]] = query_data.sum()
                     
                 elif calc == 'min':
-                    def_dict[dist_vert[e]] = query_data[self.var_value].min()
+                    def_dict[dist_vert[e]] = query_data.min()
                     
                 elif calc == 'max':
-                    def_dict[dist_vert[e]] = query_data[self.var_value].max()
+                    def_dict[dist_vert[e]] = query_data.max()
             
             new_df = new_df.append(def_dict, ignore_index=True)
         
