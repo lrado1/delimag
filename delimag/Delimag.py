@@ -116,6 +116,20 @@ class Delimag():
         """
         Aggregate the var_val variable with groupping by the var_vertical variable.
         
+        Parameters:
+        -----------
+        
+        calc (String): Method of aggregation. Possible values:
+            - sum
+            - mean
+            - min
+            - max
+            - count
+        
+        delim (String): Specifies the separator to use when splitting the string.
+        
+        dropna (Boolean): Remove missing values from the result set.
+        
         """
         
         dist_val = self.distinct_vertical(delim=delim, drop_na=drop_na)
