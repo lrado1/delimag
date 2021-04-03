@@ -195,16 +195,16 @@ class Delimag():
                 def_dict[dist_val[i]] = q.shape[0]
                 
             elif 'mean' in calc:
-                def_dict[dist_val[i]] = q[self.var_value].mean()
+                def_dict[dist_val[i]] = q.mean()
             
             elif 'sum' in calc:
-                def_dict[dist_val[i]] = q[self.var_value].sum()
+                def_dict[dist_val[i]] = q.sum()
             
             elif 'min' in calc:
-                def_dict[dist_val[i]] = q[self.var_value].min()
+                def_dict[dist_val[i]] = q.min()
             
             elif 'max' in calc:
-                def_dict[dist_val[i]] = q[self.var_value].max()  
+                def_dict[dist_val[i]] = q.max()  
 
         new_df = pd.DataFrame(pd.Series(def_dict))       
         new_df.columns = [calc]
