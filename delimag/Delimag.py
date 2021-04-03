@@ -1,10 +1,18 @@
 class Delimag():
     """
     Delimag is a tool to analyze Pandas DataFrame objects with multiselect records.
+    
+    Makes it possible to create spreadsheet-style pivot tables after splitting delimited, multiselect records.
         
+    Parameters:
+        data (Pandas DataFrame): A Pandas DataFrame object that we are goint to analyse.
         
-    Attributes:
-
+        var_vertical (str): The column name of a categorical variable of the data. Will be used as key to group by along the vertical axis of the resulting pivot-talbe.
+        
+        var_horizontall (str): The column name of a categorical variable of the data. Will be used as key to group by along the horizontal axis of the resulting pivot-talbe.
+        
+        var_val (str): The column name of the data to aggregate.
+        
 
     Methods:
 
