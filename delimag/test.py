@@ -47,14 +47,20 @@ class TestDelimagClass(unittest.TestCase):
                          ".distinct_horizontal() returned incorrect list of values")
         
         self.assertEqual(self.delimag.distinct_horizontal(delim=' ', drop_na=False)[1], 'Black;Red', 
-                         ".distinct_horizontal() returned incorrect list of values")
+                         ".distinct_horizontal() returned incorrect value")
         
         self.assertEqual(self.delimag.distinct_horizontal(delim=' ', drop_na=False)[5], 'Green;Blue;Blue', 
-                         ".distinct_horizontal() returned incorrect list of values")
+                         ".distinct_horizontal() returned incorrect value")
     
     
     def aggregate_vertical(self):
-        pass
+        self.assertEqual(self.delimag.aggregate_vertical().loc['Cube'][0], 8,
+                          ".aggregate_vertical() returned incorrect value")
+        
+        self.assertEqual(self.delimag.result.loc['Cube'][0], 8,
+                          ".aggregate_vertical() updated result class attribute incorrectly")
+        
+        
         
     def aggregate_horizontal(slef):
         pass
