@@ -1,0 +1,1 @@
+Delimag is a tool to analyze Pandas DataFrame objects with multiselect records.
