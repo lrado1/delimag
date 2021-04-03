@@ -58,7 +58,7 @@ class Delimag():
         else:
             distinct_values = list({value for values in self.data[self.var_vertical] 
                                     for value in str(values).split(delim)})
-        
+               
         return distinct_values
         
         
@@ -114,7 +114,9 @@ class Delimag():
         new_df = pd.DataFrame(pd.Series(def_dict))       
         new_df.columns = [calc]
         
-        return new_df
+        self.result = new_df
+        
+        return self.result
     
     
     
@@ -151,7 +153,9 @@ class Delimag():
         new_df = pd.DataFrame(pd.Series(def_dict))       
         new_df.columns = [calc]
         
-        return new_df
+        self.result = new_df
+        
+        return self.result
         
                 
         
@@ -195,7 +199,9 @@ class Delimag():
         
         new_df.index = list(dist_hori)
         
-        return new_df.fillna(0)
+        self.result = new_df.fillna(0)
+        
+        return self.result
 
 
         
@@ -210,5 +216,5 @@ class Delimag():
         
         
         
-        result self.result
+        return self.result
         
