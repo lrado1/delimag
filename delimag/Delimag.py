@@ -207,7 +207,7 @@ class Delimag():
         
         
         
-        def return_result(self, sort_vertical='', sort_horizontal='', proportionize=False):
+        def return_result(self, sort_vertical='', sort_horizontal='', proportionize=''):
         """
         Return the result set of the last aggregation applied on the input DataFrame object in an organized format (sorted, proportionized).
         
@@ -240,7 +240,7 @@ class Delimag():
             if proportionize == 'column':
 
                 for col in result.columns:
-                    total = result[col].sum(axis=0)
+                    total = result[col].sum()
 
                     for row in result.index:
                         result.loc[row, col] = result.loc[row, col] / total
@@ -248,9 +248,9 @@ class Delimag():
             elif proportionize == 'row':
 
                 for row in result.index:
-                    total = result.loc[index,].sum(axis=1)
+                    total = result.loc[row,].sum()
 
-                    for row in result.index:
+                    for col in result.columns:
                         result.loc[row, col] = result.loc[row, col] / total
 
             elif proportionize == 'total':
