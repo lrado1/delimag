@@ -185,5 +185,42 @@ class TestDelimagClass(unittest.TestCase):
         self.assertEqual(self.return_result(sort_vertical='Pyramid', sort_horizontal='Green').iloc[2,2], 114.0,
                           "result class attribute returned incorrec value")
         
+        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
+                                            sort_horizontal='Green', 
+                                            proportionize='column').loc[:,'Sphere'].sum(), 1,
+                          "result class attribute returned incorrec value")
         
+        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
+                                            sort_horizontal='Green', 
+                                            proportionize='column').loc[:,'Cube'].sum(), 1,
+                          "result class attribute returned incorrec value")
+        
+        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
+                                            sort_horizontal='Green', 
+                                            proportionize='column').loc[:,'Cone'].sum(), 1,
+                          "result class attribute returned incorrec value")
+        
+        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
+                                            sort_horizontal='Green', 
+                                            proportionize='row').loc['Black',:].sum(), 1,
+                          "result class attribute returned incorrec value")
+        
+        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
+                                            sort_horizontal='Green', 
+                                            proportionize='row').loc['Blue',:].sum(), 1,
+                          "result class attribute returned incorrec value")
+        
+        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
+                                            sort_horizontal='Green', 
+                                            proportionize='row').loc['Red',:].sum(), 1,
+                          "result class attribute returned incorrec value")
+        
+        
+        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
+                                            sort_horizontal='Green', 
+                                            proportionize='total').loc['Red',:].sum(), 0.4507501630789302,
+                          "result class attribute returned incorrec value")
+        
+        self.assertAlmostEqual(self.return_result(proportionize='total').loc['Red',:].sum(), 0.4507501630789302,
+                          "result class attribute returned incorrec value")
         
