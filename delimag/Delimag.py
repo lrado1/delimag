@@ -41,14 +41,13 @@ class Delimag():
     def __init__(self, data, var_vertical, var_horizontal="", var_value=""):
         
         self.data = data
+        self.result = self.data
         self.var_vertical = var_vertical
         self.var_horizontal = var_horizontal
         self.var_value = var_value
-        
+                
         self._aggregation_type = ''
         self._aggregation_method = ''
- 
-
     
     
     def __repr__(self):
@@ -83,7 +82,7 @@ class Delimag():
         else:
             distinct_values = list({value for values in self.data[self.var_vertical] 
                                     for value in str(values).split(delim)})
-        
+               
         return distinct_values
         
         
@@ -158,7 +157,9 @@ class Delimag():
         new_df = pd.DataFrame(pd.Series(def_dict))       
         new_df.columns = [calc]
         
-        return new_df
+        self.result = new_df
+        
+        return self.result
     
     
     
@@ -209,7 +210,9 @@ class Delimag():
         new_df = pd.DataFrame(pd.Series(def_dict))       
         new_df.columns = [calc]
         
-        return new_df
+        self.result = new_df
+        
+        return self.result
         
                 
         
@@ -269,17 +272,72 @@ class Delimag():
         
         new_df.index = list(dist_hori)
         
-        return new_df.fillna(0)
+        self.result = new_df.fillna(0)
+        
+        return self.result
 
 
         
         
         
-    def result(self, sort_vertical, sort_horizontal, proportionize=False):
+        def return_result(self, sort_vertical='', sort_horizontal='', proportionize=''):
         """
-        Return the result set of the aggregation in a Pandas DataFrame object in an organized format (sorted, proportionized).                
+
+        Return the result set of the last aggregation applied on the input DataFrame object in an organized format (sorted, proportionized).
+        
+        
+        Attributes:
+        sort_vertical (String): Name or list of names of horizontal (axis 1) variables to sort the result table vertically.
+        
+        sort_horizontal (String): Name or list of names of vertical (axis 0) variables to sort the result table horizontall.
+        
+        proportionize (Boolean): Recalculate the values of the result DataFrame as proportions.
+            - if proportionoze = False: no recalculation will be done.
+            - if proportionize = 'column': Values will be shown as the proportion of the column total.
+            - if proportionize = 'row': Values will be shown as the proportion of the row total (only possible after .aggregate_cross() method)
+            - if proportionize = 'total': Values will be shown as the proportion of the grand total.
+        
         """
         
+        result = self.result.copy()
+        
+        if sort_vertical != '':
+            result.sort_values(by=sort_vertical, axis=0, inplace=True)
+        
+        if sort_horizontal != '':
+            result.sort_values(by=sort_horizontal, axis=1, inplace=True)
+
         
         
+        if proportionize in ('column', 'row', 'total', ''):
+        
+            if proportionize == 'column':
+
+                for col in result.columns:
+                    total = result[col].sum()
+
+                    for row in result.index:
+                        result.loc[row, col] = result.loc[row, col] / total
+
+            elif proportionize == 'row':
+
+                for row in result.index:
+                    total = result.loc[row,].sum()
+
+                    for col in result.columns:
+                        result.loc[row, col] = result.loc[row, col] / total
+
+            elif proportionize == 'total':
+
+                total = sum([result[x].sum() for x in result.columns])
+                for col in result.columns:
+                    for row in result.index:
+                        result.loc[row, col] = result.loc[row, col] / total
+        
+        else:
+            raise ValueError("proportionize parameter can only accept the following values:"\
+                             "'column', 'row', 'total' or can be left empty.")
+                
+        
+        return result
         
