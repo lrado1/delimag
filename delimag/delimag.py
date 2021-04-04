@@ -41,7 +41,7 @@ class Delimag():
     def __init__(self, data, var_vertical, var_horizontal="", var_value=""):
         
         self.data = data
-        self.result = self.data
+        self.result = []
         self.var_vertical = var_vertical
         self.var_horizontal = var_horizontal
         self.var_value = var_value
