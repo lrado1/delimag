@@ -76,6 +76,7 @@ class Delimag():
         
         """
         
+
         if dropna:
             distinct_values = list({value for values in self.data[self.var_vertical].dropna() 
                                     for value in str(values).split(delim)})
@@ -97,7 +98,9 @@ class Delimag():
         
         delim (String): Specifies the separator to use when splitting the string.
         dropna (Boolean): Remove missing values from the result set.
+        
         """
+        
         
         if dropna:
             distinct_values = list({value for values in self.data[self.var_horizontal].dropna() 
@@ -131,33 +134,41 @@ class Delimag():
         
         """
         
-        dist_val = self.distinct_vertical(delim=delim)
-        def_dict = defaultdict(int)
-
-
-        for i in range(len(dist_val)):
+        return_dictionary = defaultdict(int)
+        distinct_values = self.distinct_vertical(delim=delim)
+        
+        
+        # Filter data.
+        
+        for i in range(len(distinct_values)):
             
-            q = self.data.loc[self.data[self.var_vertical].str.contains(dist_val[i]).fillna(False),self.var_value]
+            q = self.data.loc[self.data[self.var_vertical].str.contains(distinct_values[i]).fillna(False),self.var_value]
 
+        
+        # Apply aggregation on filtered data.
+        
             if 'count' in calc:
-                def_dict[dist_val[i]] = q.shape[0]
+                return_dictionary[distinct_values[i]] = q.shape[0]
                 
             elif 'mean' in calc:
-                def_dict[dist_val[i]] = q[self.var_value].mean()
+                return_dictionary[distinct_values[i]] = q[self.var_value].mean()
                 
             elif 'sum' in calc:
-                def_dict[dist_val[i]] = q[self.var_value].sum()
+                return_dictionary[distinct_values[i]] = q[self.var_value].sum()
                 
             elif 'min' in calc:
-                def_dict[dist_val[i]] = q[self.var_value].min()
+                return_dictionary[distinct_values[i]] = q[self.var_value].min()
                 
             elif 'max' in calc:
-                def_dict[dist_val[i]] = q[self.var_value].max() 
+                return_dictionary[distinct_values[i]] = q[self.var_value].max() 
 
-        new_df = pd.DataFrame(pd.Series(def_dict))       
-        new_df.columns = [calc]
         
-        self.result = new_df
+        # Add aggregation results to return DataFrame
+        
+        return_df = pd.DataFrame(pd.Series(return_dictionary))       
+        return_df.columns = [calc]
+        
+        self.result = return_df
         
         return self.result
     
@@ -184,33 +195,40 @@ class Delimag():
         
         """
 
-        dist_val = self.distinct_horizontal(delim=delim)
-        def_dict = defaultdict(int)
+        distinct_values = self.distinct_horizontal(delim=delim)
+        return_dictionary = defaultdict(int)
 
+        
+        # Filter data.
+        
+        for i in range(len(distinct_values)):
+            
+            q = self.data.loc[self.data[self.var_horizontal].str.contains(distinct_values[i]).fillna(False),self.var_value]
 
-        for i in range(len(dist_val)):
-            q = self.data.loc[self.data[self.var_horizontal].str.contains(dist_val[i]).fillna(False),self.var_value]
-
-
+        
+        # Apply aggregation on filtered data.
+        
             if 'count' in calc:
-                def_dict[dist_val[i]] = q.shape[0]
+                return_dictionary[distinct_values[i]] = q.shape[0]
                 
             elif 'mean' in calc:
-                def_dict[dist_val[i]] = q.mean()
+                return_dictionary[distinct_values[i]] = q.mean()
             
             elif 'sum' in calc:
-                def_dict[dist_val[i]] = q.sum()
+                return_dictionary[distinct_values[i]] = q.sum()
             
             elif 'min' in calc:
-                def_dict[dist_val[i]] = q.min()
-            
+                return_dictionary[distinct_values[i]] = q.min()            
             elif 'max' in calc:
-                def_dict[dist_val[i]] = q.max()  
+                return_dictionary[distinct_values[i]] = q.max()  
 
-        new_df = pd.DataFrame(pd.Series(def_dict))       
-        new_df.columns = [calc]
+                
+        # Add aggregation results to return DataFrame.
         
-        self.result = new_df
+        return_df = pd.DataFrame(pd.Series(return_dictionary))       
+        return_df.columns = [calc]
+        
+        self.result = return_df
         
         return self.result
         
@@ -239,45 +257,52 @@ class Delimag():
         
         """
         
-        dist_vert = self.distinct_vertical(delim=delim_vertical)
-        dist_hori = self.distinct_horizontal(delim=delim_horizontal)
-        new_df = pd.DataFrame()
-        def_dict = defaultdict(int)
+        distinct_vertical = self.distinct_vertical(delim=delim_vertical)
+        distinct_horizontal = self.distinct_horizontal(delim=delim_horizontal)
+        return_df = pd.DataFrame()
+        return_dictionary = defaultdict(int)
         
-        for i in range(len(dist_hori)):
+        
+        # Filter data.
+        
+        for i in range(len(distinct_horizontal)):
             
-            for e in range(len(dist_vert)):
+            for e in range(len(distinct_vertical)):
                 
                 query_data = self.data.loc[
-                    (self.data[self.var_horizontal].str.contains(dist_hori[i]).fillna(False)) &
-                    (self.data[self.var_vertical].str.contains(dist_vert[e]).fillna(False)) 
+                    (self.data[self.var_horizontal].str.contains(distinct_horizontal[i]).fillna(False)) &
+                    (self.data[self.var_vertical].str.contains(distinct_vertical[e]).fillna(False)) 
                     ]
-            
+       
+    
+        # Apply aggregation on filtered data.
+        
                 if calc == 'count':
-                    def_dict[dist_vert[e]] = query_data.shape[0]
+                    return_dictionary[distinct_vertical[e]] = query_data.shape[0]
 
                 elif calc == 'mean':
-                    def_dict[dist_vert[e]] = query_data[self.var_value].mean()
+                    return_dictionary[distinct_vertical[e]] = query_data[self.var_value].mean()
                 
                 elif calc == 'sum':
-                    def_dict[dist_vert[e]] = query_data[self.var_value].sum()
+                    return_dictionary[distinct_vertical[e]] = query_data[self.var_value].sum()
                     
                 elif calc == 'min':
-                    def_dict[dist_vert[e]] = query_data[self.var_value].min()
+                    return_dictionary[distinct_vertical[e]] = query_data[self.var_value].min()
                     
                 elif calc == 'max':
-                    def_dict[dist_vert[e]] = query_data[self.var_value].max()
+                    return_dictionary[distinct_vertical[e]] = query_data[self.var_value].max()
             
-            new_df = new_df.append(def_dict, ignore_index=True)
+            
+            # Add aggregation result to return DataFrame.
+            
+            return_df = return_df.append(return_dictionary, ignore_index=True)
         
-        new_df.index = list(dist_hori)
-        
-        self.result = new_df.fillna(0)
+        return_df.index = list(distinct_horizontal)
+        self.result = return_df.fillna(0)
         
         return self.result
 
 
-        
         
         
         def return_result(self, sort_vertical='', sort_horizontal='', proportionize=''):
@@ -301,13 +326,17 @@ class Delimag():
         
         result = self.result.copy()
         
+        
+        # Apply sort on the data.
+        
         if sort_vertical != '':
             result.sort_values(by=sort_vertical, axis=0, inplace=True)
         
         if sort_horizontal != '':
             result.sort_values(by=sort_horizontal, axis=1, inplace=True)
-
-        
+            
+            
+        # Re-calculate values into proportions.
         
         if proportionize in ('column', 'row', 'total', ''):
         
