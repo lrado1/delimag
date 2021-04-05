@@ -5,12 +5,27 @@ class Delimag1d():
     
     Attributes:
     -----------
+    data (Pandas DataFrame): A Pandas DataFrame object that we are goint to analyse.
+    
+    var_group(str): Variable (column) name to group by on the result table index.
+    
+    var_value(str): Variable (column) name to aggregate.
     
     
     Methods:
     --------
     
+    distinct_values(delim=';', dropna=True): 
+        - Return a list of distinct values from the groupping variable, after splitting the delimited records.
+    
+    aggregate_values(calc='count', delim=';'):
+        - Aggregate the values of the value variable with groupping by the groupping variable.
+    
+    return_result(sort_by='', ascending=True, proportionize=False):
+        - Return the result set of the last aggregation applied on the input DataFrame object, in an organized format (sorted, proportionized).
+    
     """
+        
         
     def __init__(self, data, var_group, var_value):
        
@@ -124,7 +139,7 @@ class Delimag1d():
     def return_result(self, sort_by='', ascending=True, proportionize=False):
         """
 
-        Return the result set of the last aggregation applied on the input DataFrame object in an organized format (sorted, proportionized).
+        Return the result set of the last aggregation applied on the input DataFrame object, in an organized format (sorted, proportionized).
         
         
         Attributes:
