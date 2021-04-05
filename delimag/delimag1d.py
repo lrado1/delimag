@@ -79,7 +79,7 @@ class Delimag1d():
     
     
     
-    def aggregate(self, calc='count', delim=';', dropna=True, show_results=True):
+    def aggregate(self, calc='count', delim=';', dropna_group=True, dropna_value=True, show_results=True):
         """
         Aggregate the values of the value variable with groupping by the groupping variable.
         
@@ -94,13 +94,15 @@ class Delimag1d():
                 
         delim (str): Specifies the separator to use when splitting the string.
         
-        dropna (bool): Remove missing values from the result set.
+        dropna_group (bool): Remove missing values from the group variable.
+        
+        dropna_value (bool): Remove missing values from the value variable.
         
         """
 
         
         return_dictionary = defaultdict(int)
-        distinct_values = self.distinct_values(delim=delim, dropna=dropna)
+        distinct_values = self.distinct_values(delim=delim, dropna=dropna_group)
         column_names = set()
         
         
