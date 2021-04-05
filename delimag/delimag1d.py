@@ -35,7 +35,6 @@ class Delimag1d():
                 
         self.result = []
         self._aggregation_type = 'None'
-        self._aggregation_method = 'None'
         
     
     
@@ -46,7 +45,6 @@ class Delimag1d():
         
         return (f'DataFrame name: {df_name} \n'
                 f'Aggregation type: {self._aggregation_type} \n'
-                f'Aggregation method: {self._aggregation_method}\n'
                 f'Value variable: {self.var_value} \n'
                 f'Groupping variable: {self.var_group} \n')
 
@@ -130,6 +128,8 @@ class Delimag1d():
         return_df.columns = list(column_names)
         
         self.result = return_df
+        self._aggregation_type = calc
+        
         
         return self.result
     

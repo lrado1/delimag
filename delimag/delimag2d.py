@@ -144,7 +144,9 @@ class Delimag2d(Delimag1d):
             return_df = return_df.append(return_dictionary, ignore_index=True)
         
         return_df.index = list(distinct_horizontal)
+        
         self.result = return_df.fillna(0)
+        self._aggregation_type = calc
         
         return self.result
 
