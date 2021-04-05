@@ -3,15 +3,17 @@
 Delimag is a tool to analyze Pandas DataFrame objects with multiselect records.
 <br>
 
-## Table of Contents
+### Table of Contents
 
- 1. Installation
- 2. Project Motivation
- 3. File Descriptions
- 4. Results
- 5. Licencing
+ 1. [Installation](#installation)
+ 2. [Usage](#usage)
+ 3. [Project Motivation](#motivation)
+ 4. [Version](#version)
+ 5. [Licencing](#licencing)
+ 
 
-## Installation
+<a id='installation'></a>
+### Installation
 
 **Dependencies:** <br>
 There should be no necessary libraries to run the code here beyond the Anaconda distribution of Python. The code should run with no issues using Python versions 3.*.
@@ -24,10 +26,12 @@ There should be no necessary libraries to run the code here beyond the Anaconda 
 To be added
 
 
-## Usage
+<a id='usage'></a>
+### Usage
 To be added.
 
-## Project Motivation
+<a id='motivation'></a>
+### Project Motivation
 
 For this project I was interrested in solving a problem I have ran accross many times during my work. <br>
 I wanted to make it easier to analyse and aggregate data where one or more (Categorical) column includes multiple, delimited values.<br>
@@ -46,9 +50,11 @@ I wanted to make it easier to analyse and aggregate data where one or more (Cate
 * Writing documentation (Including in-line comments, docstrings, and readme).
 * Using Git and GitHub with multiple branches of develpment.
 
-## Version
+<a id='version'></a>
+### Version
 The current version of the project is v0.01.
 
-## Licencing
+<a id='licencing'></a>
+### Licencing
 The project is licenced under an MIT licence.<br>
 Please see licencing details in the LICENSE.md file which you can find in the repository.
