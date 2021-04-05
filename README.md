@@ -1,7 +1,4 @@
 ![alt text](https://github.com/lrado1/delimag/blob/master/logo.png)
-
-# Delimag
-
 Delimag is a tool to analyze Pandas DataFrame objects with multiselect records.
 <br>
 
