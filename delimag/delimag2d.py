@@ -96,7 +96,7 @@ class Delimag2d(Delimag1d):
         
         
         
-    def aggregate(self, calc=len, delim_vertical=';', delim_horizontal=';'):
+    def aggregate(self, calc=len, delim_vertical=';', delim_horizontal=';', show_results=True):
         """
         Create a cross-tabulation based on two variables and aggregates a third variables's values based on the cross-groupping.
         
@@ -148,7 +148,8 @@ class Delimag2d(Delimag1d):
         self.result = return_df.fillna(0)
         self._aggregation_type = calc
         
-        return self.result
+        if show_results == True:
+            return self.result
 
 
         
@@ -208,7 +209,7 @@ class Delimag2d(Delimag1d):
             pass
         
         elif sort_by_horizontal == 'column':
-            print('bingo')
+            
             result.sort_index(ascending=ascending_horizontal, inplace=True, axis=1)
             
         else:

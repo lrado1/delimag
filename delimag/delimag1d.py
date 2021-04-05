@@ -79,7 +79,7 @@ class Delimag1d():
     
     
     
-    def aggregate(self, calc='count', delim=';', dropna=True):
+    def aggregate(self, calc='count', delim=';', dropna=True, show_results=True):
         """
         Aggregate the values of the value variable with groupping by the groupping variable.
         
@@ -130,8 +130,8 @@ class Delimag1d():
         self.result = return_df
         self._aggregation_type = calc
         
-        
-        return self.result
+        if show_results == True:
+            return self.result
     
     
     
