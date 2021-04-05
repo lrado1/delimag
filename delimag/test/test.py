@@ -6,6 +6,7 @@
 
 import unittest
 import pandas as pd
+import numpy as np
 
 from delimag import Delimag
 
@@ -34,190 +35,119 @@ class TestDelimagClass(unittest.TestCase):
     
     def distinct_vertical(self):
         self.assertSequenceEqual(self.delimag.distinct_values(), ['Cube', 'Pyramid', 'Cone', 'Sphere'], 
-                         ".distinct_vertical() returned incorrect list of values")
+                         ".distinct_values() returned incorrect list of values")
         
         self.assertSequenceEqual(self.delimag.distinct_values(dropna=False), ['Cube', 'nan', 'Sphere', 'Pyramid', 'Cone'],
-                         ".distinct_vertical() returned incorrect list of values")
+                         ".distinct_values() returned incorrect list of values")
         
         self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False)[1], 'Cube;Pyramid', 
-                         ".distinct_vertical() returned incorrect list of values")
+                         ".distinct_values() returned incorrect list of values")
         
         self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False)[5], 'Sphere;Pyramid', 
-                         ".distinct_vertical() returned incorrect list of values")
+                         ".distinct_values() returned incorrect list of values")
     
     
     
     
     def distinct_horizontal(self):
-        self.assertSequenceEqual(self.delimag.distinct_values(switch_group=False), ['Black', 'Blue', 'Red', 'Green'], 
-                         ".distinct_horizontal() returned incorrect list of values")
+        self.assertSequenceEqual(self.delimag.distinct_values(switch_group=True), ['Black', 'Blue', 'Red', 'Green'], 
+                         ".distinct_values() returned incorrect list of values")
         
-        self.assertSequenceEqual(self.delimag.distinct_horizontal(dropna=False), ['Black', 'nan', 'Blue', 'Red', 'Green'],
-                         ".distinct_horizontal() returned incorrect list of values")
+        self.assertSequenceEqual(self.delimag.distinct_values(dropna=False, switch_group=True), ['Black', 'nan', 'Blue', 'Red', 'Green'],
+                         ".distinct_values() returned incorrect list of values")
         
-        self.assertEqual(self.delimag.distinct_horizontal(delim=' ', drop_na=False)[1], 'Black;Red', 
-                         ".distinct_horizontal() returned incorrect value")
+        self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False, switch_group=True)[1], 'Black;Red', 
+                         ".distinct_values() returned incorrect value")
         
-        self.assertEqual(self.delimag.distinct_horizontal(delim=' ', drop_na=False)[5], 'Green;Blue;Blue', 
-                         ".distinct_horizontal() returned incorrect value")
+        self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False, switch_group=True)[5], 'Green;Blue;Blue', 
+                         ".distinct_values() returned incorrect value")
     
     
     
     
-    def aggregate_vertical(self):
+    def aggregate(self):
+        self.assertEqual(self.delimag.aggregate().loc['Black', 'Cone'], 3,
+                          ".aggregate() returned incorrect count value")
         
-        self.assertEqual(self.delimag.aggregate_vertical().loc['Cube'][0], 8,
-                          ".aggregate_vertical() returned incorrect count value")
+        self.assertEqual(self.delimag.aggregate(calc=len).loc['Black', 'Cone'], 3,
+                          ".aggregate() returned incorrect count value")
         
-        self.assertEqual(self.delimag.aggregate_vertical(calc='count').loc['Cube'][0], 8,
-                          ".aggregate_vertical() returned incorrect count value")
-        
-        self.delimag.aggregate_vertical(calc='count')
-        self.assertEqual(self.delimag.result.loc['Cube'][0], 8,
-                          ".aggregate_vertical() updated result class attribute incorrectly")
-        
-        self.assertAlmostEqual(self.delimag.aggregate_vertical(calc='mean').loc['Cube'][0], 51.428571, 
-                          ".aggregate_vertical() returned incorrect mean value")
-        
-        self.assertEqual(self.delimag.aggregate_vertical(calc='sum').loc['Cube'][0], 360, 
-                          ".aggregate_vertical() returned incorrect sum value")
-        
-        self.assertEqual(self.delimag.aggregate_vertical(calc='min').loc['Cube'][0], 12, 
-                          ".aggregate_vertical() returned incorrect min value")
-        
-        self.assertEqual(self.delimag.aggregate_vertical(calc='min').loc['Sphere'][0], 17, 
-                          ".aggregate_vertical() returned incorrect min value")
-    
-        self.assertEqual(self.delimag.aggregate_vertical(calc='max').loc['Cone'][0], 96, 
-                          ".aggregate_vertical() returned incorrect max value")
-        
-        self.assertEqual(self.delimag.aggregate_vertical(calc='max').loc['Pyramid'][0], 90, 
-                          ".aggregate_vertical() returned incorrect max value")
-        
-        self.assertEqual(self.delimag.aggregate_vertical(calc='count', delim=' ').loc['Sphere'][0], 5, 
-                          ".aggregate_vertical() returned incorrect calc value when delim=' '")
-        
-
-
-        
-    def aggregate_horizontal(slef):
-        self.assertEqual(self.delimag.aggregate_horizontal().loc['Black'][0], 9,
-                          ".aggregate_horizontal() returned incorrect count value")
-        
-        self.assertEqual(self.delimag.aggregate_horizontal(calc='count').loc['Black'][0], 9,
-                          ".aggregate_horizontal() returned incorrect count value")
-        
-        self.delimag.aggregate_horizontal(calc='count')
-        self.assertEqual(self.delimag.result.loc['Black'][0], 9,
-                          ".aggregate_horizontal() updated result class attribute incorrectly")
-        
-        self.assertAlmostEqual(self.delimag.aggregate_horizontal(calc='mean').loc['Black'][0], 62.77777777777778, 
-                          ".aggregate_horizontal() returned incorrect mean value")
-        
-        self.assertEqual(self.delimag.aggregate_horizontal(calc='sum').loc['Black'][0], 565.0, 
-                          ".aggregate_horizontal() returned incorrect sum value")
-        
-        self.assertEqual(self.delimag.aggregate_horizontal(calc='min').loc['Black'][0], 12.0, 
-                          ".aggregate_horizontal() returned incorrect min value")
-        
-        self.assertEqual(self.delimag.aggregate_horizontal(calc='min').loc['Green'][0], 24.0, 
-                          ".aggregate_horizontal() returned incorrect min value")
-    
-        self.assertEqual(self.delimag.aggregate_horizontal(calc='max').loc['Red'][0], 63, 
-                          ".aggregate_horizontal() returned incorrect max value")
-        
-        self.assertEqual(self.delimag.aggregate_horizontal(calc='max').loc['Blue'][0], 96, 
-                          ".aggregate_horizontal() returned incorrect max value")
-        
-        self.assertEqual(self.delimag.aggregate_horizontal(calc='count', delim=' ').loc['Black'][0], 9, 
-                          ".aggregate_horizontal() returned incorrect calc value when delim=' '")
-
-        
-        
-    
-    def aggregate_cross(self):
-        self.assertEqual(self.delimag.aggregate_cross().loc['Black', 'Cone'], 3,
-                          ".aggregate_cross() returned incorrect count value")
-        
-        self.assertEqual(self.delimag.aggregate_cross(calc='count').loc['Black', 'Cone'], 3,
-                          ".aggregate_cross() returned incorrect count value")
-        
-        self.delimag.aggregate_cross(calc='count')
+        self.delimag.aggregate(calc=len)
         self.assertEqual(self.delimag.result.loc['Black', 'Cone'], 3,
-                          ".aggregate_cross() updated result class attribute incorrectly")
+                          ".aggregate() updated result class attribute incorrectly")
         
-        self.assertAlmostEqual(self.delimag.aggregate_cross(calc='mean').loc['Black', 'Cone'], 63.333333, 
-                          ".aggregate_cross() returned incorrect mean value")
+        self.assertAlmostEqual(self.delimag.aggregate(calc=np.mean).loc['Black', 'Cone'], 63.333333, 
+                          ".aggregate() returned incorrect mean value")
         
-        self.assertEqual(self.delimag.aggregate_cross(calc='sum').loc['Blue', 'Pyramid'], 0, 
-                          ".aggregate_cross() returned incorrect sum value")
+        self.assertEqual(self.delimag.aggregate(calc=np.sum).loc['Blue', 'Pyramid'], 0, 
+                          ".aggregate() returned incorrect sum value")
         
-        self.assertEqual(self.delimag.aggregate_cross(calc='min').loc['Red', 'Pyramid'], 43, 
-                          ".aggregate_cross() returned incorrect min value")
+        self.assertEqual(self.delimag.aggregate(calc=np.min).loc['Red', 'Pyramid'], 43, 
+                          ".aggregate returned incorrect min value")
         
-        self.assertEqual(self.delimag.aggregate_cross(calc='min').loc['Green', 'Cone'], 24.0, 
-                          ".aggregate_cross() returned incorrect min value")
+        self.assertEqual(self.delimag.aggregate(calc=np.min).loc['Green', 'Cone'], 24.0, 
+                          ".aggregate returned incorrect min value")
     
-        self.assertEqual(self.delimag.aggregate_cross(calc='max').loc['Black', 'Cone'], 96, 
-                          ".aggregate_cross() returned incorrect max value")
+        self.assertEqual(self.delimag.aggregate(calc=np.max).loc['Black', 'Cone'], 96, 
+                          ".aggregate returned incorrect max value")
         
-        self.assertEqual(self.delimag.aggregate_cross(calc='max').loc['Black', 'Sphere'], 49, 
-                          ".aggregate_cross() returned incorrect max value")
+        self.assertEqual(self.delimag.aggregate(calc=np.max).loc['Black', 'Sphere'], 49, 
+                          ".aggregate returned incorrect max value")
         
-        self.assertEqual(self.delimag.aggregate_cross(calc='max', delim_vertical=' ', delim_horizontal=' ').loc['Black;Red', 'Cone;Pyramid'], 43, 
-                          ".aggregate_cross() returned incorrect calc value when delim=' '")
+        self.assertEqual(self.delimag.aggregate(calc=np.max, delim_vertical=' ', delim_horizontal=' ').loc['Black;Red', 'Cone;Pyramid'], 43, 
+                          ".aggregate returned incorrect calc value when delim=' '")
     
     
     
     
     def return_result(self):
-        self.delimag.aggregate_cross(calc='count')
+        self.delimag.aggregate(calc=len)
         self.assertEqual(self.return_result().loc['Black', 'Cone'], 3,
                           ".return_result() method returned incorrec value")
         
-        self.assertEqual(self.return_result(sort_vertical='Cone').iloc[1,1], 1,
+        self.assertEqual(self.return_result(sort_by_vertical='Cone').iloc[1,1], 1,
                           "result class attribute returned incorrec value")
         
-        self.assertEqual(self.return_result(sort_vertical='Pyramid').iloc[3,2], 3,
+        self.assertEqual(self.return_result(sort_by_vertical='Pyramid').iloc[3,2], 3,
                           "result class attribute returned incorrec value")
         
-        self.delimag.aggregate_cross(calc='sum')
-        self.assertEqual(self.return_result(sort_vertical='Pyramid', sort_horizontal='Green').iloc[2,2], 114.0,
+        self.delimag.aggregate_cross(calc=np.sum)
+        self.assertEqual(self.return_result(sort_by_vertical='Pyramid', sort_by_horizontal='Green').iloc[2,2], 114.0,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
-                                            sort_horizontal='Green', 
-                                            proportionize='column').loc[:,'Sphere'].sum(), 1,
+        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+                                                  sort_by_horizontal='Green', 
+                                                  proportionize='column').loc[:,'Sphere'].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
-                                            sort_horizontal='Green', 
-                                            proportionize='column').loc[:,'Cube'].sum(), 1,
+        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+                                                  sort_by_horizontal='Green', 
+                                                  proportionize='column').loc[:,'Cube'].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
-                                            sort_horizontal='Green', 
-                                            proportionize='column').loc[:,'Cone'].sum(), 1,
+        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+                                                  sort_by_horizontal='Green', 
+                                                  proportionize='column').loc[:,'Cone'].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
-                                            sort_horizontal='Green', 
+        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+                                            sort_by_horizontal='Green', 
                                             proportionize='row').loc['Black',:].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
-                                            sort_horizontal='Green', 
+        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+                                            sort_by_horizontal='Green', 
                                             proportionize='row').loc['Blue',:].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
-                                            sort_horizontal='Green', 
+        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+                                            sort_by_horizontal='Green', 
                                             proportionize='row').loc['Red',:].sum(), 1,
                           "result class attribute returned incorrec value")
         
         
-        self.assertAlmostEqual(self.return_result(sort_vertical='Pyramid', 
-                                            sort_horizontal='Green', 
+        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+                                            sort_by_horizontal='Green', 
                                             proportionize='total').loc['Red',:].sum(), 0.4507501630789302,
                           "result class attribute returned incorrec value")
         
