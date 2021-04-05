@@ -87,38 +87,32 @@ class Delimag1d():
         """
         
         return_dictionary = defaultdict(int)
-        distinct_values = self.distinct_vertical(delim=delim)
+        distinct_values = self.distinct_values(delim=delim, dropna=dropna)
+        column_names = set()
         
         
         # Filter data.
         
         for i in range(len(distinct_values)):
             
-            q = self.data.loc[self.data[self.var_group].str.contains(distinct_values[i]).fillna(False),self.var_value]
+            q = self.data.loc[self.data[self.var_group].str.contains(distinct_values[i]).fillna(True),self.var_value]
 
-        
+            
         # Apply aggregation on filtered data.
         
-            if 'count' in calc:
-                return_dictionary[distinct_values[i]] = q.shape[0]
-                
-            elif 'mean' in calc:
-                return_dictionary[distinct_values[i]] = q[self.var_value].mean()
-                
-            elif 'sum' in calc:
-                return_dictionary[distinct_values[i]] = q[self.var_value].sum()
-                
-            elif 'min' in calc:
-                return_dictionary[distinct_values[i]] = q[self.var_value].min()
-                
-            elif 'max' in calc:
-                return_dictionary[distinct_values[i]] = q[self.var_value].max() 
+            if hasattr(calc, '__iter__'):
+                for c in calc:
+                    return_dictionary.setdefault(distinct_values[i], []).append(c(q))
+                    column_names.add(c.__name__)
+            else:
+                return_dictionary.setdefault(distinct_values[i], []).append(calc(q))
+                column_names.add(calc.__name__)
 
-        
+                
         # Add aggregation results to return DataFrame
         
-        return_df = pd.DataFrame(pd.Series(return_dictionary))       
-        return_df.columns = [calc]
+        return_df = pd.DataFrame.from_dict(return_dictionary).transpose()
+        return_df.columns = list(column_names)
         
         self.result = return_df
         
