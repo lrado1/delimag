@@ -4,32 +4,13 @@ Delimag is a tool to analyze Pandas DataFrame objects with multiselect records.
 <br>
 
 ### Table of Contents
-
- 1. [Installation](#installation)
- 2. [Usage](#usage)
- 3. [Project Motivation](#motivation)
+ 
+ 1. [Project Motivation](#motivation)
+ 2. [Installation](#installation)
+ 3. [Usage](#usage)
  4. [Version](#version)
  5. [Licencing](#licencing)
  
-
-<a id='installation'></a>
-### Installation
-
-**Dependencies:** <br>
-There should be no necessary libraries to run the code here beyond the Anaconda distribution of Python. The code should run with no issues using Python versions 3.*.
-
-* Python version 3.6.3 was used during the development of the project.
-* The package is built on top of the Pandas library. Version 0.23.3 was used during development.
-<br>
-
-**User installation:** <br>
-To be added
-
-
-<a id='usage'></a>
-### Usage
-To be added.
-
 <a id='motivation'></a>
 ### Project Motivation
 
@@ -49,6 +30,24 @@ I wanted to make it easier to analyse and aggregate data where one or more (Cate
 * Using Object Oriented Programming.
 * Writing documentation (Including in-line comments, docstrings, and readme).
 * Using Git and GitHub with multiple branches of develpment.
+
+
+<a id='installation'></a>
+### Installation
+
+**Dependencies:** <br>
+There should be no necessary libraries to run the code here beyond the Anaconda distribution of Python. The code should run with no issues using Python versions 3.*.
+
+* Python version 3.6.3 was used during the development of the project.
+* The package is built on top of the Pandas library. Version 0.23.3 was used during development.
+<br>
+
+**User installation:** <br>
+To be added
+
+<a id='usage'></a>
+### Usage
+To be added.
 
 <a id='version'></a>
 ### Version
