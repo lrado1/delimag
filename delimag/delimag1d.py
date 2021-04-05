@@ -45,11 +45,11 @@ class Delimag1d():
         df_name =[x for x in globals() if globals()[x] is self.data][0]
         
         return (f'DataFrame name: {df_name} \n'
-                f'Groupping variable: {self.var_group} \n'
-                f'Value variable: {self.var_value} \n'
                 f'Aggregation type: {self._aggregation_type} \n'
-                f'Aggregation method: {self._aggregation_method}')
-    
+                f'Aggregation method: {self._aggregation_method}'
+                f'Value variable: {self.var_value} \n'
+                f'Groupping variable: {self.var_group} \n')
+
     
     
     
@@ -66,10 +66,10 @@ class Delimag1d():
         """
         
 
-        if dropna = True:
+        if dropna == True:
             distinct_values = list({value for values in self.data[self.var_group].dropna() 
                                     for value in str(values).split(delim)})
-        elif dropna = False:
+        elif dropna == False:
             distinct_values = list({value for values in self.data[self.var_group] 
                                     for value in str(values).split(delim)})
         
@@ -81,7 +81,7 @@ class Delimag1d():
     
     
     
-        def aggregate_values(self, calc='count', delim=';'):
+    def aggregate_values(self, calc='count', delim=';'):
         """
         Aggregate the values of the value variable with groupping by the groupping variable.
         
