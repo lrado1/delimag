@@ -70,7 +70,7 @@ class Delimag2d(Delimag1d):
         
         
         
-    def distinct_values(self, delim=';', dropna=True, switch_group=True):
+    def distinct_values(self, delim=';', dropna=True, switch_group=False):
         """
         Return a list of distinct values from the col_vertical variable, after splitting the delimited records.
         
