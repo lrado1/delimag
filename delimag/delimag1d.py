@@ -72,14 +72,14 @@ class Delimag1d():
         
         Parameters:
         -----------
+        -----------
         
-        calc (String): Method of aggregation. Possible values:
-            - sum
-            - mean
-            - min
-            - max
-            - count
-        
+        calc (str or list of str): Method name or list of method names of aggregation type.
+            Example:
+                - np.sum, np.mean, lambda functions etc...
+                - d1 = Delimag1d(data, 'Category', 'Value')
+                  d1.aggregate_values(lambda x: np.mean(x <= 20))
+                
         delim (String): Specifies the separator to use when splitting the string.
         
         dropna (Boolean): Remove missing values from the result set.
