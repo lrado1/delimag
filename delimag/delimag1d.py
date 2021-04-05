@@ -51,12 +51,15 @@ class Delimag1d():
         """
         
 
-        if dropna:
+        if dropna = True:
             distinct_values = list({value for values in self.data[self.var_group].dropna() 
                                     for value in str(values).split(delim)})
-        else:
+        elif dropna = False:
             distinct_values = list({value for values in self.data[self.var_group] 
                                     for value in str(values).split(delim)})
+        
+        else:
+            raise ValueError("Dropna parameter can only accept Boolean values.")
                
         return distinct_values
     
