@@ -45,8 +45,8 @@ class Delimag1d():
         Parameters:
         -----------
         
-        delim (String): Specifies the separator to use when splitting the string.
-        dropna (Boolean): Remove missing values from the result set.
+        delim (str): Specifies the separator to use when splitting the string.
+        dropna (bool): Remove missing values from the result set.
         
         """
         
@@ -79,11 +79,12 @@ class Delimag1d():
                 - d1 = Delimag1d(data, 'Category', 'Value')
                   d1.aggregate_values(lambda x: np.mean(x <= 20))
                 
-        delim (String): Specifies the separator to use when splitting the string.
+        delim (str): Specifies the separator to use when splitting the string.
         
-        dropna (Boolean): Remove missing values from the result set.
+        dropna (bool): Remove missing values from the result set.
         
         """
+
         
         return_dictionary = defaultdict(int)
         distinct_values = self.distinct_values(delim=delim, dropna=dropna)
@@ -133,8 +134,8 @@ class Delimag1d():
                 
         proportionize (bool): Recalculate the values of the result DataFrame as proportions.
         
-        
         """
+        
         
         result = self.result.copy()
         
