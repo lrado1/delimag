@@ -1,4 +1,4 @@
-![title](logo.PNG)
+![alt text](https://github.com/lrado1/delimag/blob/master/logo.png)
 
 # Delimag
 
