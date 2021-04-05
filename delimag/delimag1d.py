@@ -121,6 +121,20 @@ class Delimag1d():
     
     
     def return_result(self, sort_by='', ascending=True, proportionize=False):
+        """
+
+        Return the result set of the last aggregation applied on the input DataFrame object in an organized format (sorted, proportionized).
+        
+        
+        Attributes:
+        sort_by (str): Column name or list of column names to sort the result table. Pass 'index' to sort by the index label.
+        
+        ascending (bool): Sort ascending vs. descending. Specify list for multiple sort orders. If this is a list of bools, must match the length of the by.
+                
+        proportionize (bool): Recalculate the values of the result DataFrame as proportions.
+        
+        
+        """
         
         result = self.result.copy()
         
