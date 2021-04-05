@@ -1,4 +1,4 @@
-class Delimag2d():
+class Delimag2d(Delimag1d):
     """
     Delimag is a tool to analyze Pandas DataFrame objects with multiselect records.
     
@@ -38,33 +38,39 @@ class Delimag2d():
             
     """
 
-    def __init__(self, data, var_vertical, var_horizontal="", var_value=""):
+    def __init__(self, data, var_group, var_subgroup, var_value):
         
-        self.data = data
-        self.result = []
-        self.var_vertical = var_vertical
-        self.var_horizontal = var_horizontal
-        self.var_value = var_value
-                
-        self._aggregation_type = ''
-        self._aggregation_method = ''
+        Delimag1d.__init__(self, data, var_group, var_value)
+        
+        self.var_subgroup = var_subgroup
+    
+    
     
     
     def __repr__(self):
         
-        df_name =[x for x in globals() if globals()[x] is self.data][0]
+        return_string = Delimag1d.__repr__(self)
+        return_string += (f'Sub-Groupping Variable: {self.var_subgroup}')
+        return return_string
+   
+
+
+
+    def switch_group(self):
+        """
+        Switch the variables assigned to var_group and var_subgroup.
         
-        return (f'DataFrame name: {df_name} \n'
-                f'Vertical variable: {self.var_vertical} \n'
-                f'Horizontal variable: {self.var_horizontal} \n'
-                f'Value variable: {self.var_value} \n'
-                f'Aggregation type: {self._aggregation_type} \n'
-                f'Aggregation method: {self._aggregation_method}')     
-    
-    
-    
-    
-    def distinct_vertical(self, delim=';', dropna=True):
+        
+        """
+        
+        temp = self.var_group
+        self.var_group = self.var_subgroup
+        self.var_subgroup = temp
+        
+        
+        
+        
+    def distinct_values(self, delim=';', dropna=True, switch_group=True):
         """
         Return a list of distinct values from the col_vertical variable, after splitting the delimited records.
         
@@ -76,166 +82,21 @@ class Delimag2d():
         
         """
         
+        if switch_group == True:
+            self.switch_group()
+                
+        distinct_values = Delimag1d.distinct_values(self, delim=delim, dropna=dropna)
+        
+        if switch_group == True:
+            self.switch_group()
 
-        if dropna:
-            distinct_values = list({value for values in self.data[self.var_vertical].dropna() 
-                                    for value in str(values).split(delim)})
-        else:
-            distinct_values = list({value for values in self.data[self.var_vertical] 
-                                    for value in str(values).split(delim)})
                
         return distinct_values
         
         
         
         
-    def distinct_horizontal(self, delim=';', dropna=True):
-        """
-        Return a list of distinct values from the col_horizontal variable, after splitting the delimited records.
-        
-        Parameters:
-        -----------
-        
-        delim (String): Specifies the separator to use when splitting the string.
-        dropna (Boolean): Remove missing values from the result set.
-        
-        """
-        
-        
-        if dropna:
-            distinct_values = list({value for values in self.data[self.var_horizontal].dropna() 
-                                    for value in str(values).split(delim)})
-        else:
-            distinct_values = list({value for values in self.data[self.var_horizontal] 
-                                    for value in str(values).split(delim)})
-        
-        return distinct_values
-       
-        
-        
-    
-    def aggregate_vertical(self, calc='count', delim=';'):
-        """
-        Aggregate the var_val variable with groupping by the var_vertical variable.
-        
-        Parameters:
-        -----------
-        
-        calc (String): Method of aggregation. Possible values:
-            - sum
-            - mean
-            - min
-            - max
-            - count
-        
-        delim (String): Specifies the separator to use when splitting the string.
-        
-        dropna (Boolean): Remove missing values from the result set.
-        
-        """
-        
-        return_dictionary = defaultdict(int)
-        distinct_values = self.distinct_vertical(delim=delim)
-        
-        
-        # Filter data.
-        
-        for i in range(len(distinct_values)):
-            
-            q = self.data.loc[self.data[self.var_vertical].str.contains(distinct_values[i]).fillna(False),self.var_value]
-
-        
-        # Apply aggregation on filtered data.
-        
-            if 'count' in calc:
-                return_dictionary[distinct_values[i]] = q.shape[0]
-                
-            elif 'mean' in calc:
-                return_dictionary[distinct_values[i]] = q[self.var_value].mean()
-                
-            elif 'sum' in calc:
-                return_dictionary[distinct_values[i]] = q[self.var_value].sum()
-                
-            elif 'min' in calc:
-                return_dictionary[distinct_values[i]] = q[self.var_value].min()
-                
-            elif 'max' in calc:
-                return_dictionary[distinct_values[i]] = q[self.var_value].max() 
-
-        
-        # Add aggregation results to return DataFrame
-        
-        return_df = pd.DataFrame(pd.Series(return_dictionary))       
-        return_df.columns = [calc]
-        
-        self.result = return_df
-        
-        return self.result
-    
-    
-    
-    
-    def aggregate_horizontal(self, calc='count', delim=';'):
-        """
-        Aggregate the var_val variable with groupping by the var_horizontal variable.
-        
-        Parameters:
-        -----------
-        
-        calc (String): Method of aggregation. Possible values:
-            - sum
-            - mean
-            - min
-            - max
-            - count
-        
-        delim (String): Specifies the separator to use when splitting the string.
-        
-        dropna (Boolean): Remove missing values from the result set.
-        
-        """
-
-        distinct_values = self.distinct_horizontal(delim=delim)
-        return_dictionary = defaultdict(int)
-
-        
-        # Filter data.
-        
-        for i in range(len(distinct_values)):
-            
-            q = self.data.loc[self.data[self.var_horizontal].str.contains(distinct_values[i]).fillna(False),self.var_value]
-
-        
-        # Apply aggregation on filtered data.
-        
-            if 'count' in calc:
-                return_dictionary[distinct_values[i]] = q.shape[0]
-                
-            elif 'mean' in calc:
-                return_dictionary[distinct_values[i]] = q.mean()
-            
-            elif 'sum' in calc:
-                return_dictionary[distinct_values[i]] = q.sum()
-            
-            elif 'min' in calc:
-                return_dictionary[distinct_values[i]] = q.min()            
-            elif 'max' in calc:
-                return_dictionary[distinct_values[i]] = q.max()  
-
-                
-        # Add aggregation results to return DataFrame.
-        
-        return_df = pd.DataFrame(pd.Series(return_dictionary))       
-        return_df.columns = [calc]
-        
-        self.result = return_df
-        
-        return self.result
-        
-                
-        
-        
-    def aggregate_cross(self, calc='count', delim_vertical=';', delim_horizontal=';'):
+    def aggregate(self, calc=len, delim_vertical=';', delim_horizontal=';', show_results=True):
         """
         Create a cross-tabulation based on two variables and aggregates a third variables's values based on the cross-groupping.
         
@@ -257,64 +118,57 @@ class Delimag2d():
         
         """
         
-        distinct_vertical = self.distinct_vertical(delim=delim_vertical)
-        distinct_horizontal = self.distinct_horizontal(delim=delim_horizontal)
+        distinct_vertical = self.distinct_values(delim=delim_vertical, switch_group=False)
+        distinct_horizontal = self.distinct_values(delim=delim_horizontal, switch_group=True)
         return_df = pd.DataFrame()
         return_dictionary = defaultdict(int)
+        column_names = set()
         
         
         # Filter data.
         
         for i in range(len(distinct_horizontal)):
-            
+                
             for e in range(len(distinct_vertical)):
                 
                 query_data = self.data.loc[
-                    (self.data[self.var_horizontal].str.contains(distinct_horizontal[i]).fillna(False)) &
-                    (self.data[self.var_vertical].str.contains(distinct_vertical[e]).fillna(False)) 
+                    (self.data[self.var_subgroup].str.contains(distinct_horizontal[i]).fillna(False)) &
+                    (self.data[self.var_group].str.contains(distinct_vertical[e]).fillna(False)) 
                     ]
-       
-    
-        # Apply aggregation on filtered data.
-        
-                if calc == 'count':
-                    return_dictionary[distinct_vertical[e]] = query_data.shape[0]
-
-                elif calc == 'mean':
-                    return_dictionary[distinct_vertical[e]] = query_data[self.var_value].mean()
                 
-                elif calc == 'sum':
-                    return_dictionary[distinct_vertical[e]] = query_data[self.var_value].sum()
-                    
-                elif calc == 'min':
-                    return_dictionary[distinct_vertical[e]] = query_data[self.var_value].min()
-                    
-                elif calc == 'max':
-                    return_dictionary[distinct_vertical[e]] = query_data[self.var_value].max()
-            
-            
+                return_dictionary[distinct_vertical[e]] = calc(query_data[self.var_value])
+
+
             # Add aggregation result to return DataFrame.
             
             return_df = return_df.append(return_dictionary, ignore_index=True)
         
         return_df.index = list(distinct_horizontal)
+        
         self.result = return_df.fillna(0)
+        self._aggregation_type = calc
         
-        return self.result
+        if show_results == True:
+            return self.result
 
 
         
         
-        def return_result(self, sort_vertical='', sort_horizontal='', proportionize=''):
+    def return_result(self, sort_by_vertical='', ascending_vertical=True,
+                      sort_by_horizontal='', ascending_horizontal=True, proportionize=''):
         """
 
         Return the result set of the last aggregation applied on the input DataFrame object in an organized format (sorted, proportionized).
         
         
         Attributes:
-        sort_vertical (String): Name or list of names of horizontal (axis 1) variables to sort the result table vertically.
+        sort_by_vertical (str): Name or list of names of horizontal (axis 1) variables to sort the result table vertically.
         
-        sort_horizontal (String): Name or list of names of vertical (axis 0) variables to sort the result table horizontall.
+        ascending_vertical (bool): Sort ascending vs. descending.
+        
+        sort__by_horizontal (str): Name or list of names of vertical (axis 0) variables to sort the result table horizontall.
+        
+        ascending_horizontal (bool): Sort ascending vs. descending.
         
         proportionize (Boolean): Recalculate the values of the result DataFrame as proportions.
             - if proportionoze = False: no recalculation will be done.
@@ -324,16 +178,42 @@ class Delimag2d():
         
         """
         
+        
+#         if sort_by == '':
+#             pass
+        
+#         elif sort_by == 'index':
+#             result.sort_index(ascending=ascending, inplace=True)
+
+#         else:
+#             result.sort_values(by=sort_by, ascending=ascending, inplace=True)
+        
+        
         result = self.result.copy()
         
         
         # Apply sort on the data.
         
-        if sort_vertical != '':
-            result.sort_values(by=sort_vertical, axis=0, inplace=True)
+        if sort_by_vertical == '':
+            pass
         
-        if sort_horizontal != '':
-            result.sort_values(by=sort_horizontal, axis=1, inplace=True)
+        elif sort_by_vertical == 'index':
+            result.sort_index(ascending=ascending_vertical, inplace=True)
+        
+        else:
+            result.sort_values(by=sort_by_vertical, ascending=ascending_vertical, axis=0, inplace=True)
+        
+        
+        
+        if sort_by_horizontal == '':
+            pass
+        
+        elif sort_by_horizontal == 'column':
+            
+            result.sort_index(ascending=ascending_horizontal, inplace=True, axis=1)
+            
+        else:
+            result.sort_values(by=sort_by_horizontal, ascending=ascending_horizontal, axis=1, inplace=True)
             
             
         # Re-calculate values into proportions.
