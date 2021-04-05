@@ -10,7 +10,6 @@ Delimag is a tool to analyze Pandas DataFrame objects with multiselect records.
  3. File Descriptions
  4. Results
  5. Licencing
-<br>
 
 ### Installation
 
@@ -23,13 +22,10 @@ There should be no necessary libraries to run the code here beyond the Anaconda 
 
 **User installation:** <br>
 To be added
-<br>
-<br>
+
 
 ### Usage
 To be added.
-<br>
-<br>
 
 ### Project Motivation
 
@@ -49,12 +45,9 @@ I wanted to make it easier to analyse and aggregate data where one or more (Cate
 * Using Object Oriented Programming.
 * Writing documentation (Including in-line comments, docstrings, and readme).
 * Using Git and GitHub with multiple branches of develpment.
-<br>
-
 
 ### Version
 The current version of the project is v0.01.
-<br>
 
 ### Licencing
 The project is licenced under an MIT licence.<br>
