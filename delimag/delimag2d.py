@@ -159,9 +159,13 @@ class Delimag2d(Delimag1d):
         
         
         Attributes:
-        sort_vertical (String): Name or list of names of horizontal (axis 1) variables to sort the result table vertically.
+        sort_by_vertical (str): Name or list of names of horizontal (axis 1) variables to sort the result table vertically.
         
-        sort_horizontal (String): Name or list of names of vertical (axis 0) variables to sort the result table horizontall.
+        ascending_vertical (bool): Sort ascending vs. descending.
+        
+        sort__by_horizontal (str): Name or list of names of vertical (axis 0) variables to sort the result table horizontall.
+        
+        ascending_horizontal (bool): Sort ascending vs. descending.
         
         proportionize (Boolean): Recalculate the values of the result DataFrame as proportions.
             - if proportionoze = False: no recalculation will be done.
