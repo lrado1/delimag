@@ -72,8 +72,7 @@ class Delimag1d():
         
         Parameters:
         -----------
-        -----------
-        
+     
         calc (str or list of str): Method name or list of method names of aggregation type.
             Example:
                 - np.sum, np.mean, lambda functions etc...
@@ -119,4 +118,39 @@ class Delimag1d():
         return self.result
     
     
+    
+    
+    def return_result(self, sort_by='', ascending=True, proportionize=False):
+        
+        result = self.result.copy()
+        
+        
+        # Apply sort on the data.
+        
+        if sort_by == '':
+            pass
+        
+        elif sort_by == 'index':
+            result.sort_index(ascending=ascending, inplace=True)
+
+        else:
+            result.sort_values(by=sort_by, ascending=ascending, inplace=True)
+        
+            
+        # Re-calculate values into proportions.
+        
+        if proportionize == True:
+            total = result.sum()
+            for row in result.index:
+
+                result.loc[row,:] = result.loc[row,:] / total
+
+        elif proportionize == False:
+            pass
+        
+        else:
+            raise ValueError("proportionize parameter should be boolean (True/False).")
+                
+        
+        return result
     
