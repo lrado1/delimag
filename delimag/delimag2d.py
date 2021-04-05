@@ -96,7 +96,7 @@ class Delimag2d(Delimag1d):
         
         
         
-    def aggregate(self, calc=np.sum, delim_vertical=';', delim_horizontal=';'):
+    def aggregate(self, calc=len, delim_vertical=';', delim_horizontal=';'):
         """
         Create a cross-tabulation based on two variables and aggregates a third variables's values based on the cross-groupping.
         
@@ -151,7 +151,7 @@ class Delimag2d(Delimag1d):
 
         
         
-    def return_result(self, sort_by_vertical='', ascending_vertical=True
+    def return_result(self, sort_by_vertical='', ascending_vertical=True,
                       sort_by_horizontal='', ascending_horizontal=True, proportionize=''):
         """
 
@@ -171,15 +171,41 @@ class Delimag2d(Delimag1d):
         
         """
         
+        
+#         if sort_by == '':
+#             pass
+        
+#         elif sort_by == 'index':
+#             result.sort_index(ascending=ascending, inplace=True)
+
+#         else:
+#             result.sort_values(by=sort_by, ascending=ascending, inplace=True)
+        
+        
         result = self.result.copy()
         
         
         # Apply sort on the data.
         
-        if sort_vertical != '':
+        if sort_by_vertical == '':
+            pass
+        
+        elif sort_by_vertical == 'index':
+            result.sort_index(ascending=ascending_vertical, inplace=True)
+        
+        else:
             result.sort_values(by=sort_by_vertical, ascending=ascending_vertical, axis=0, inplace=True)
         
-        if sort_horizontal != '':
+        
+        
+        if sort_by_horizontal == '':
+            pass
+        
+        elif sort_by_horizontal == 'column':
+            print('bingo')
+            result.sort_index(ascending=ascending_horizontal, inplace=True, axis=1)
+            
+        else:
             result.sort_values(by=sort_by_horizontal, ascending=ascending_horizontal, axis=1, inplace=True)
             
             
