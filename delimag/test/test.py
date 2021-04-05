@@ -15,14 +15,14 @@ test_df = pd.read_csv('test_data.csv')
 class TestDelimagClass(unittest.TestCase):
     
     def setUp(self):
-        self.delimag = Delimag(test_df, 'Object', 'Color', 'Value')
+        self.delimag = Delimag2d(test_df, 'Object', 'Color', 'Value')
     
-    
+ 
     
     
     def test_initialization(self):
-        self.assertEqual(self.delimag.var_vertical, 'Object', "var_vertical initialized incorrectly")
-        self.assertEqual(self.delimag.var_horizontal, 'Color', "var_horizontal initialized incorrectly")
+        self.assertEqual(self.delimag.var_group, 'Object', "var_vertical initialized incorrectly")
+        self.assertEqual(self.delimag.var_subgroup, 'Color', "var_horizontal initialized incorrectly")
         self.assertEqual(self.delimag.var_value, 'Value', "var_value initialized incorrectly")
         self.assertEqual(self.delimag.result, [], "result attribute initialized incorrectly")
         self.assertEqual(self.delimag.data.loc[0,'Object'], "Cube;Pyramid;Cone", "data initialized incorrectly")
@@ -33,23 +33,23 @@ class TestDelimagClass(unittest.TestCase):
     
     
     def distinct_vertical(self):
-        self.assertSequenceEqual(self.delimag.distinct_vertical(), ['Cube', 'Pyramid', 'Cone', 'Sphere'], 
+        self.assertSequenceEqual(self.delimag.distinct_values(), ['Cube', 'Pyramid', 'Cone', 'Sphere'], 
                          ".distinct_vertical() returned incorrect list of values")
         
-        self.assertSequenceEqual(self.delimag.distinct_vertical(dropna=False), ['Cube', 'nan', 'Sphere', 'Pyramid', 'Cone'],
+        self.assertSequenceEqual(self.delimag.distinct_values(dropna=False), ['Cube', 'nan', 'Sphere', 'Pyramid', 'Cone'],
                          ".distinct_vertical() returned incorrect list of values")
         
-        self.assertEqual(self.delimag.distinct_vertical(delim=' ', drop_na=False)[1], 'Cube;Pyramid', 
+        self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False)[1], 'Cube;Pyramid', 
                          ".distinct_vertical() returned incorrect list of values")
         
-        self.assertEqual(self.delimag.distinct_vertical(delim=' ', drop_na=False)[5], 'Sphere;Pyramid', 
+        self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False)[5], 'Sphere;Pyramid', 
                          ".distinct_vertical() returned incorrect list of values")
     
     
     
     
     def distinct_horizontal(self):
-        self.assertSequenceEqual(self.delimag.distinct_horizontal(), ['Black', 'Blue', 'Red', 'Green'], 
+        self.assertSequenceEqual(self.delimag.distinct_values(switch_group=False), ['Black', 'Blue', 'Red', 'Green'], 
                          ".distinct_horizontal() returned incorrect list of values")
         
         self.assertSequenceEqual(self.delimag.distinct_horizontal(dropna=False), ['Black', 'nan', 'Blue', 'Red', 'Green'],

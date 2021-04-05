@@ -55,5 +55,6 @@ The current version of the project is v0.01.
 
 <a id='licencing'></a>
 ### Licencing
+This project is built
 The project is licenced under an MIT licence.<br>
 Please see licencing details in the LICENSE.md file which you can find in the repository.
