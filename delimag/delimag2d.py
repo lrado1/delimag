@@ -84,12 +84,16 @@ class Delimag2d(Delimag1d):
         
         if switch_group == True:
             self.switch_group()
+        
+        elif switch_group != False:
+            raise ValueError("switch_group parameter can only accept bool values.")
+            
                 
         distinct_values = Delimag1d.distinct_values(self, delim=delim, dropna=dropna)
         
         if switch_group == True:
             self.switch_group()
-
+  
                
         return distinct_values
         

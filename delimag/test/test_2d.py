@@ -148,6 +148,17 @@ class TestDelimag2dClass(unittest.TestCase):
                           "result class attribute returned incorrec value")
 
         
+        
+        
+    def test_bool_parameters_raise_error(self):
+        self.delimag = Delimag1d(test_df, 'Object', 'Color', 'Value')
+        
+        with self.assertRaises(ValueError):
+            self.self.delimag = Delimag1d(test_df, 'Object', 'Value')
+        
+        
+        
+        
 tests = TestDelimagClass()
 test_loaded  = unittest.TestLoader().loadTestsFromModule(tests)
 unittest.TextTestRunner().run(test_loaded)
