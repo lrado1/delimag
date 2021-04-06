@@ -13,6 +13,35 @@ class TestDelimag2dClass(unittest.TestCase):
     
     def setUp(self):
         self.delimag = Delimag2d(test_df, 'Object', 'Color', 'Value')
+        
+    def test_bool_parameters_raise_error(self):
+        
+        self.delimag.aggregate(calc=len)
+        self.assertEqual(self.delimag.return_result().loc['Black', 'Cone'], 3,
+                          ".return_result() method returned incorrec value")
+        
+        with self.assertRaises(ValueError):
+            self.delimag.distinct_values(dropna='x')
+            
+        with self.assertRaises(ValueError):
+            self.delimag.distinct_values(switch_group='x')
+            
+        with self.assertRaises(ValueError):
+            self.delimag.aggregate(dropna_vertical='x')
+            
+        with self.assertRaises(ValueError):
+            self.delimag.aggregate(dropna_horizontal='x')
+        
+        with self.assertRaises(ValueError):
+            self.delimag.aggregate(dropna_value='x')
+            
+        with self.assertRaises(ValueError):
+            self.delimag.aggregate(show_results='x')
+            
+        with self.assertRaises(ValueError):
+            self.delimag.return_result(proportionize='X')
+            
+            
     
     def test_initialization(self):
         self.assertEqual(self.delimag.var_group, 'Object', "var_vertical initialized incorrectly")
@@ -150,15 +179,11 @@ class TestDelimag2dClass(unittest.TestCase):
         
         
         
-    def test_bool_parameters_raise_error(self):
-        self.delimag = Delimag1d(test_df, 'Object', 'Color', 'Value')
-        
-        with self.assertRaises(ValueError):
-            self.delimag = Delimag1d(test_df, 'Object', 'Value')
+
         
         
         
         
-tests = TestDelimagClass()
+tests = TestDelimag2dClass()
 test_loaded  = unittest.TestLoader().loadTestsFromModule(tests)
 unittest.TextTestRunner().run(test_loaded)
