@@ -1,14 +1,10 @@
-# Any changes to the distributions library should be reinstalled with
-#  pip install --upgrade .
-
-# For running unit tests, use
-# /usr/bin/python -m unittest test
+# For running unit tests, first import the Delimag1d and Delimag2d package
+# Than run this python script from terminal
 
 import unittest
 import pandas as pd
 import numpy as np
 
-from delimag import Delimag
 
 # Open data for testing
 test_df = pd.read_csv('test_data.csv')
@@ -17,9 +13,6 @@ class TestDelimagClass(unittest.TestCase):
     
     def setUp(self):
         self.delimag = Delimag2d(test_df, 'Object', 'Color', 'Value')
-    
- 
-    
     
     def test_initialization(self):
         self.assertEqual(self.delimag.var_group, 'Object', "var_vertical initialized incorrectly")
@@ -33,39 +26,39 @@ class TestDelimagClass(unittest.TestCase):
     
     
     
-    def distinct_vertical(self):
+    def test_distinct_vertical(self):
         self.assertSequenceEqual(self.delimag.distinct_values(), ['Cube', 'Pyramid', 'Cone', 'Sphere'], 
                          ".distinct_values() returned incorrect list of values")
         
-        self.assertSequenceEqual(self.delimag.distinct_values(dropna=False), ['Cube', 'nan', 'Sphere', 'Pyramid', 'Cone'],
+        self.assertSequenceEqual(self.delimag.distinct_values(dropna=False), ['Cone', 'nan', 'Pyramid', 'Sphere', 'Cube'],
                          ".distinct_values() returned incorrect list of values")
         
-        self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False)[1], 'Cube;Pyramid', 
+        self.assertEqual(self.delimag.distinct_values(delim=' ', dropna=False)[1], 'Pyramid;Sphere', 
                          ".distinct_values() returned incorrect list of values")
         
-        self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False)[5], 'Sphere;Pyramid', 
+        self.assertEqual(self.delimag.distinct_values(delim=' ', dropna=False)[5], 'Cone;Pyramid', 
                          ".distinct_values() returned incorrect list of values")
     
     
     
     
-    def distinct_horizontal(self):
-        self.assertSequenceEqual(self.delimag.distinct_values(switch_group=True), ['Black', 'Blue', 'Red', 'Green'], 
+    def test_distinct_horizontal(self):
+        self.assertSequenceEqual(self.delimag.distinct_values(switch_group=True), ['Red', 'Black', 'Blue', 'Green'], 
                          ".distinct_values() returned incorrect list of values")
         
-        self.assertSequenceEqual(self.delimag.distinct_values(dropna=False, switch_group=True), ['Black', 'nan', 'Blue', 'Red', 'Green'],
+        self.assertSequenceEqual(self.delimag.distinct_values(dropna=False, switch_group=True), ['nan', 'Red', 'Black', 'Green', 'Blue'],
                          ".distinct_values() returned incorrect list of values")
         
-        self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False, switch_group=True)[1], 'Black;Red', 
+        self.assertEqual(self.delimag.distinct_values(delim=' ', dropna=False, switch_group=True)[0], 'Blue;Blue', 
                          ".distinct_values() returned incorrect value")
         
-        self.assertEqual(self.delimag.distinct_values(delim=' ', drop_na=False, switch_group=True)[5], 'Green;Blue;Blue', 
+        self.assertEqual(self.delimag.distinct_values(delim=' ', dropna=False, switch_group=True)[12], 'Green;Blue;Blue', 
                          ".distinct_values() returned incorrect value")
     
     
     
     
-    def aggregate(self):
+    def test_aggregate(self):
         self.assertEqual(self.delimag.aggregate().loc['Black', 'Cone'], 3,
                           ".aggregate() returned incorrect count value")
         
@@ -76,7 +69,7 @@ class TestDelimagClass(unittest.TestCase):
         self.assertEqual(self.delimag.result.loc['Black', 'Cone'], 3,
                           ".aggregate() updated result class attribute incorrectly")
         
-        self.assertAlmostEqual(self.delimag.aggregate(calc=np.mean).loc['Black', 'Cone'], 63.333333, 
+        self.assertAlmostEqual(self.delimag.aggregate(calc=np.mean).loc['Black', 'Cone'], 63.333333, 6, 
                           ".aggregate() returned incorrect mean value")
         
         self.assertEqual(self.delimag.aggregate(calc=np.sum).loc['Blue', 'Pyramid'], 0, 
@@ -100,57 +93,61 @@ class TestDelimagClass(unittest.TestCase):
     
     
     
-    def return_result(self):
+    def test_return_result(self):
         self.delimag.aggregate(calc=len)
-        self.assertEqual(self.return_result().loc['Black', 'Cone'], 3,
+        self.assertEqual(self.delimag.return_result().loc['Black', 'Cone'], 3,
                           ".return_result() method returned incorrec value")
         
-        self.assertEqual(self.return_result(sort_by_vertical='Cone').iloc[1,1], 1,
+        self.assertEqual(self.delimag.return_result(sort_by_vertical='Cone').iloc[1,1], 1,
                           "result class attribute returned incorrec value")
         
-        self.assertEqual(self.return_result(sort_by_vertical='Pyramid').iloc[3,2], 3,
+        self.assertEqual(self.delimag.return_result(sort_by_vertical='Pyramid').iloc[3,2], 3,
                           "result class attribute returned incorrec value")
         
-        self.delimag.aggregate_cross(calc=np.sum)
-        self.assertEqual(self.return_result(sort_by_vertical='Pyramid', sort_by_horizontal='Green').iloc[2,2], 114.0,
+        self.delimag.aggregate(calc=np.sum)
+        self.assertEqual(self.delimag.return_result(sort_by_vertical='Pyramid', sort_by_horizontal='Green').iloc[2,2], 114.0,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+        self.assertAlmostEqual(self.delimag.return_result(sort_by_vertical='Pyramid', 
                                                   sort_by_horizontal='Green', 
                                                   proportionize='column').loc[:,'Sphere'].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+        self.assertAlmostEqual(self.delimag.return_result(sort_by_vertical='Pyramid', 
                                                   sort_by_horizontal='Green', 
                                                   proportionize='column').loc[:,'Cube'].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+        self.assertAlmostEqual(self.delimag.return_result(sort_by_vertical='Pyramid', 
                                                   sort_by_horizontal='Green', 
                                                   proportionize='column').loc[:,'Cone'].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+        self.assertAlmostEqual(self.delimag.return_result(sort_by_vertical='Pyramid', 
                                             sort_by_horizontal='Green', 
-                                            proportionize='row').loc['Black',:].sum(), 1,
+                                            proportionize='row').loc['Black',:].sum(), 1, 6,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+        self.assertAlmostEqual(self.delimag.return_result(sort_by_vertical='Pyramid', 
                                             sort_by_horizontal='Green', 
                                             proportionize='row').loc['Blue',:].sum(), 1,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+        self.assertAlmostEqual(self.delimag.return_result(sort_by_vertical='Pyramid', 
                                             sort_by_horizontal='Green', 
                                             proportionize='row').loc['Red',:].sum(), 1,
                           "result class attribute returned incorrec value")
         
         
-        self.assertAlmostEqual(self.return_result(sort_by_vertical='Pyramid', 
+        self.assertAlmostEqual(self.delimag.return_result(sort_by_vertical='Pyramid', 
                                             sort_by_horizontal='Green', 
-                                            proportionize='total').loc['Red',:].sum(), 0.4507501630789302,
+                                            proportionize='total').loc['Red',:].sum(), 0.16634050880626222, 7,
                           "result class attribute returned incorrec value")
         
-        self.assertAlmostEqual(self.return_result(proportionize='total').loc['Red',:].sum(), 0.4507501630789302,
+        self.assertAlmostEqual(self.delimag.return_result(proportionize='total').loc['Red',:].sum(), 0.16634050880626222, 7,
                           "result class attribute returned incorrec value")
+
         
+tests = TestDelimagClass()
+test_loaded  = unittest.TestLoader().loadTestsFromModule(tests)
+unittest.TextTestRunner().run(test_loaded)
