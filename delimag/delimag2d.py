@@ -169,6 +169,9 @@ class Delimag2d(Delimag1d):
         
         if show_results == True:
             return self.result
+        
+        elif show_results != False:
+            raise ValueError("show_results parameter can only accept bool values.")
 
 
         
