@@ -41,49 +41,49 @@ class TestDelimag1dClass(unittest.TestCase):
     
     
     def test_aggregate(self):
-        self.assertEqual(self.delimag.aggregate().loc['Cone'], 7,
+        self.assertEqual(self.delimag.aggregate().loc['Cone'][0], 6,
                           ".aggregate() returned incorrect count value")
         
-        self.assertEqual(self.delimag.aggregate(calc=len).loc['Cone'], 7,
+        self.assertEqual(self.delimag.aggregate(calc=len).loc['Cone'][0], 6,
                           ".aggregate() returned incorrect count value")
         
         self.delimag.aggregate(calc=len)
-        self.assertEqual(self.delimag.result.loc['Cone'], 7,
+        self.assertEqual(self.delimag.result.loc['Cone'][0], 6,
                           ".aggregate() updated result class attribute incorrectly")
         
-        self.assertAlmostEqual(self.delimag.aggregate(calc=np.mean).loc['Cone'], 52.5, 6, 
+        self.assertAlmostEqual(self.delimag.aggregate(calc=np.mean).loc['Cone'][0], 52.5, 6, 
                           ".aggregate() returned incorrect mean value")
         
-        self.assertEqual(self.delimag.aggregate(calc=np.sum).loc['Pyramid'], 356, 
+        self.assertEqual(self.delimag.aggregate(calc=np.sum).loc['Pyramid'][0], 356, 
                           ".aggregate() returned incorrect sum value")
         
-        self.assertEqual(self.delimag.aggregate(calc=np.min).loc['Pyramid'], 17, 
+        self.assertEqual(self.delimag.aggregate(calc=np.min).loc['Pyramid'][0], 17, 
                           ".aggregate returned incorrect min value")
         
-        self.assertEqual(self.delimag.aggregate(calc=np.min).loc['Cone'], 11, 
+        self.assertEqual(self.delimag.aggregate(calc=np.min).loc['Cone'][0], 11, 
                           ".aggregate returned incorrect min value")
     
-        self.assertEqual(self.delimag.aggregate(calc=np.max).loc['Cone'], 96, 
+        self.assertEqual(self.delimag.aggregate(calc=np.max).loc['Cone'][0], 96, 
                           ".aggregate returned incorrect max value")
         
-        self.assertEqual(self.delimag.aggregate(calc=np.max).loc['Sphere'], 53, 
+        self.assertEqual(self.delimag.aggregate(calc=np.max).loc['Sphere'][0], 53, 
                           ".aggregate returned incorrect max value")
         
-        self.assertEqual(self.delimag.aggregate(calc=np.max, delim_vertical=' ', delim_horizontal=' ').loc['Cone;Pyramid'], 43, 
-                          ".aggregate returned incorrect calc value when delim=' '")
+        self.assertEqual(self.delimag.aggregate(calc=np.max, delim=' ').loc['Cone;Pyramid'][0], 43,
+                         ".aggregate returned incorrect calc value when delim=' '")
     
     
     
     
     def test_return_result(self):
         self.delimag.aggregate(calc=len)
-        self.assertEqual(self.delimag.return_result().loc['Cone'], 7,
+        self.assertEqual(self.delimag.return_result().loc['Cone'][0], 6,
                           ".return_result() method returned incorrec value")
         
-        self.assertEqual(self.delimag.return_result(sort_by='index').iloc[1,1][0], 7,
+        self.assertEqual(self.delimag.return_result(sort_by='index').iloc[1][0], 7,
                           "result class attribute returned incorrec value")
         
-        self.assertEqual(self.delimag.return_result(sort_by='len').iloc[3][0], 9,
+        self.assertEqual(self.delimag.return_result(sort_by='len').iloc[3][0], 7,
                           "result class attribute returned incorrec value")
         
         self.delimag.aggregate(calc=[len, np.sum, np.mean])
@@ -91,7 +91,7 @@ class TestDelimag1dClass(unittest.TestCase):
                           "result class attribute returned incorrec value")
         
         self.delimag.aggregate(calc=[len, np.sum, np.mean], dropna_value=True)
-        self.assertEqual(self.delimag.return_result(sort_by='index').iloc[1,1], 6,
+        self.assertEqual(self.delimag.return_result(sort_by='index').iloc[1,1], 360,
                           "result class attribute returned incorrec value")
         
         
@@ -113,9 +113,6 @@ class TestDelimag1dClass(unittest.TestCase):
         
         with self.assertRaises(ValueError):
             self.delimag.aggregate(dropna_group='x')
-            
-        with self.assertRaises(ValueError):
-            self.delimag.return_result(ascending='x')
         
         with self.assertRaises(ValueError):
             self.delimag.return_result(proportionize='x')
@@ -125,6 +122,6 @@ class TestDelimag1dClass(unittest.TestCase):
         
         
         
-tests = TestDelimagClass()
+tests = TestDelimag1dClass()
 test_loaded  = unittest.TestLoader().loadTestsFromModule(tests)
 unittest.TextTestRunner().run(test_loaded)
