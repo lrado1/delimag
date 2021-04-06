@@ -179,11 +179,6 @@ class TestDelimag2dClass(unittest.TestCase):
         
         
         
-
-        
-        
-        
-        
 tests = TestDelimag2dClass()
 test_loaded  = unittest.TestLoader().loadTestsFromModule(tests)
 unittest.TextTestRunner().run(test_loaded)
