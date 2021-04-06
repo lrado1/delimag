@@ -96,7 +96,8 @@ class Delimag2d(Delimag1d):
         
         
         
-    def aggregate(self, calc=len, delim_vertical=';', delim_horizontal=';', show_results=True):
+    def aggregate(self, calc=len, delim_vertical=';', delim_horizontal=';', 
+                  dropna_vertical=True, dropna_horizontal=True, dropna_value=False, show_results=True):
         """
         Create a cross-tabulation based on two variables and aggregates a third variables's values based on the cross-groupping.
         
@@ -118,8 +119,8 @@ class Delimag2d(Delimag1d):
         
         """
         
-        distinct_vertical = self.distinct_values(delim=delim_vertical, switch_group=False)
-        distinct_horizontal = self.distinct_values(delim=delim_horizontal, switch_group=True)
+        distinct_vertical = self.distinct_values(delim=delim_vertical, switch_group=False, dropna=dropna_vertical)
+        distinct_horizontal = self.distinct_values(delim=delim_horizontal, switch_group=True, dropna=dropna_horizontal)
         return_df = pd.DataFrame()
         return_dictionary = defaultdict(int)
         column_names = set()
@@ -131,10 +132,24 @@ class Delimag2d(Delimag1d):
                 
             for e in range(len(distinct_vertical)):
                 
-                query_data = self.data.loc[
-                    (self.data[self.var_subgroup].str.contains(distinct_horizontal[i]).fillna(False)) &
-                    (self.data[self.var_group].str.contains(distinct_vertical[e]).fillna(False)) 
-                    ]
+                if dropna_value == True:
+                    
+                    query_data = self.data.loc[
+                        (self.data[self.var_subgroup].str.contains(distinct_horizontal[i]).fillna(False)) &
+                        (self.data[self.var_group].str.contains(distinct_vertical[e]).fillna(False)) &
+                        (self.data[self.var_value].notna()), 
+                        ]
+                    
+                elif dropna_value == False:
+                    
+                    query_data = self.data.loc[
+                        (self.data[self.var_subgroup].str.contains(distinct_horizontal[i]).fillna(False)) &
+                        (self.data[self.var_group].str.contains(distinct_vertical[e]).fillna(False)) 
+                        ]
+                    
+                else:
+                    raise ValueError("dropna_value parameter can only accept bool values.")
+                    
                 
                 return_dictionary[distinct_vertical[e]] = calc(query_data[self.var_value])
 
