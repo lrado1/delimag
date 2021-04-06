@@ -109,13 +109,24 @@ class Delimag1d():
         # Filter data.
         
         for i in range(len(distinct_values)):
+            if dropna_value == True:
+                
+                q = self.data.loc[(self.data[self.var_group].str.contains(distinct_values[i]).fillna(False)) &
+                                  (self.data[self.var_value].notna()),
+                                    self.var_value]
             
-            q = self.data.loc[self.data[self.var_group].str.contains(distinct_values[i]).fillna(True),self.var_value]
+            elif dropna_value == False:
+            
+                q = self.data.loc[(self.data[self.var_group].str.contains(distinct_values[i]).fillna(False)),
+                                  self.var_value]
 
             
+            else:
+                raise ValueError("dropna_value parameter can only accept bool values.")
+                
         # Apply aggregation on filtered data.
         
-            if hasattr(calc, '__iter__'):
+            if isinstance(calc, (list, tuple)):
                 for c in calc:
                     return_dictionary.setdefault(distinct_values[i], []).append(c(q))
                     column_names.add(c.__name__)
