@@ -109,9 +109,6 @@ class TestDelimag1dClass(unittest.TestCase):
         self.delimag = Delimag1d(test_df, 'Object', 'Value')
         
         with self.assertRaises(ValueError):
-            self.self.delimag = Delimag1d(test_df, 'Object', 'Value')
-            
-        with self.assertRaises(ValueError):
             self.delimag.aggregate(dropna_value='x')
         
         with self.assertRaises(ValueError):

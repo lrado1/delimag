@@ -154,7 +154,7 @@ class TestDelimag2dClass(unittest.TestCase):
         self.delimag = Delimag1d(test_df, 'Object', 'Color', 'Value')
         
         with self.assertRaises(ValueError):
-            self.self.delimag = Delimag1d(test_df, 'Object', 'Value')
+            self.delimag = Delimag1d(test_df, 'Object', 'Value')
         
         
         
